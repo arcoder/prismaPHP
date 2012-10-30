@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond $1 !^(public|images|css|js)/
+# Exclude by filetype (optional)
+RewriteCond $1 !\.(gif|jpe?g|png|bmp|ico|css|js)$
+RewriteRule ^(.*).html$ index.php/$1 [PT,L]
+Options All -Indexes
+
+
+<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf)$">
+Header set Cache-Control "max-age=3600"
+</FilesMatch>
+
+</IfModule>

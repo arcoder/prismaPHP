@@ -1,0 +1,241 @@
+html,body{
+    font: 16px Arial,Verdana, Geneva, Helvetica, sans-serif;
+    line-height: 22px;
+    background:#99CCCC url(images/bg.png) left top repeat-x;
+    position:relative;
+    margin:0;
+    padding:0;
+    color:#333;
+}
+
+a:link,
+a:visited{
+    background:transparent;
+    color:#7B0A1B;
+    text-decoration:none;
+}
+a:hover,
+a:focus,
+a:active{
+    text-decoration: underline;
+}
+
+#intestazione{
+    width: 940px;
+    margin: auto;
+    font-size: 1em;
+    background: #FF0033;
+    color: #FFF;
+    min-height:60px;
+    position: relative;
+}
+#manifest {
+    width:940px;
+    min-height:210px;
+    margin: auto;
+    background: #7B0A1B;
+    position:relative;
+}
+#pie-di-pagina{
+    width: 940px;
+    margin: auto;
+    background: transparent;
+    color: #333;
+    text-align: right;
+    font-size: 12px;
+}
+#corpo{
+    width: 940px;
+    margin: auto;
+    background: transparent;
+    overflow: hidden;
+}
+#colonna-1{
+    float: left;
+    width: 940px;
+}
+
+
+#colonna-1, #colonna-2, #pie-di-pagina {
+    padding: 0.5em 0;
+}
+div p {
+    margin: 0;
+    padding: 0.5em 1em;
+}
+div h2 {
+    font-size:20px;
+    margin:0;
+    padding:0.5em 0.7em;
+}
+#download
+{
+    position: absolute;
+    left:10px;
+    top:110px;
+}
+#menu {
+    position: absolute;
+    right:0;
+    top:140px;
+
+}
+.menuNavigazione{
+    margin:0;
+    padding:0.5em 0;
+    text-align:center;
+    font-size:20px;
+}
+.menuNavigazione li{
+    display:inline;
+    white-space:nowrap;
+    padding:0  1.5em;
+}
+.menuNavigazione > li:first-child{
+    border-left:none;
+}
+.menuNavigazione a:link,
+.menuNavigazione a:visited{
+    background:transparent;
+    color:#f0f0f0;
+    text-decoration:none;
+}
+.menuNavigazione a:hover,
+.menuNavigazione a:focus,
+.menuNavigazione a:active{
+    text-decoration: underline;
+}
+
+/* BOB IMAGE REPLACEMENTS*/
+#logo {
+    position:absolute;
+    top:50%;
+    margin-top:-17px;
+    left:1em;
+    width:160px;
+
+}
+#logo a{
+    display:block;
+    background:url('images/logo.png') 0 0 no-repeat;
+    width:134px;
+    height:25px;
+}
+#logo span{
+    display:none;
+}
+#what {
+    padding:1.5em 0;
+}
+#what a{
+    display:block;
+    background:url('images/what.png') 0 0 no-repeat;
+    width:940px;
+    height:58px;
+}
+#what h1{
+    display:none;
+}
+
+#download a{
+    display:block;
+    background:url('images/download.png') 0 0 no-repeat;
+    width:228px;
+    height:82px;
+}
+#download h2{
+    display:none;
+}
+
+/* END BOB IMAGE REPLACEMENTS*/
+
+code {
+	margin:0.5em 1em;
+	padding:1em;
+	background:#f0f0f0;
+	display:block;
+	overflow: auto;
+	font:13px Monaco, sans-serif;
+        
+        color:#000;
+}
+
+#urls {
+        position:absolute;
+        top:50%;
+        margin-top:-15px;
+        right:0;
+}
+
+#urls ul {
+    margin:0;
+    padding:0;
+    list-style: none;
+    font-size:16px;
+    text-align: center;
+
+}
+
+#urls ul li{
+    display: inline;
+    white-space:nowrap;
+    margin:0;
+    padding:0 1em;
+}
+
+#urls a:link,
+#urls a:visited{
+    color:#f0f0f0;
+    text-decoration:none;
+}
+#urls a:hover,
+#urls a:focus,
+#urls a:active{
+    color: #333;
+    text-decoration: underline;
+}
+
+.vmenu {
+    margin:0;
+    padding:1em 3em;
+}
+#index {
+    list-style: none;
+}
+#index li {
+    margin:0;
+    padding:0.3em;
+    background:#f0f0f0;
+    border-bottom:1px solid #c0c0c0;
+}
+#index li a:link,
+#index li a:visited {
+    display:block;
+    color: #FF0033;
+    margin:0;
+    padding:0.7em;
+
+}
+
+#index li a:hover,
+#index li a:focus,
+#index li a:active{
+    color: #333;
+    text-decoration: underline;
+        background: #fff;
+
+}
+
+input[type=email] {
+    padding:0.5em;
+    line-height: 20px;
+    font-size:16px;
+    width:200px;
+}
+textarea {
+    font-size:16px; 
+    padding:0.5em;
+    line-height: 20px;
+    width:90%;
+    margin:0 auto;
+}

@@ -1,0 +1,2 @@
+<h2>About</h2>
+<p>This framework was developed by Alberto Ruffo. It is available under MIT license. Feel free to use this software for your opensource and/or commercial applications. Dashy! FW ships with RedBeanPHP ORM layer and Swift Mailer. This software is compatible with PHP5.2 (or higher) and Apache web server on Linux or OSX.</p>
