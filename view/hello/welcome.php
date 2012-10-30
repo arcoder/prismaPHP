@@ -30,7 +30,7 @@ Config::$dbpassword</code>
 <p><a href="<?php echo $this->link_to(array('hello','redirect_to')); ?>">Redirect!</a></p>
 </code>
 <h2>$_SERVER print_r</h2>
-<?php echo H::phpCode('[php]'.print_r($_SERVER,true).'[/php]'); ?></code>
+<code><?php echo H::phpCode('[php]'.print_r($_SERVER,true).'[/php]'); ?></code>
 
 <h2>Dynamic link to this page(see php code)</h2>
 <code><?php echo $this->link_to(array('hello','welcome')); ?></code>
