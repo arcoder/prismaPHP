@@ -9,8 +9,8 @@ RewriteRule ^(.*).html$ index.php/$1 [PT,L]
 Options All -Indexes
 
 
-<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf)$">
-Header set Cache-Control "max-age=3600"
-</FilesMatch>
+#<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf)$">
+#Header set Cache-Control "max-age=3600"
+#</FilesMatch>
 
 </IfModule>
