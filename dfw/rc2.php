@@ -188,7 +188,8 @@ class DB {
                     return R::setup('sqlite:'.Config::$dbhost,Config::$dbname,Config::$dbpassword); //sqlite
                 break;       
         }
-        R::freeze( true );
+        if(Config::$DEVELOPMENT_ENV == false)
+        	R::freeze( true );
     }
 
 }
