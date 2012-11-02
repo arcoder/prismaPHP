@@ -1,3 +1,4 @@
 TO DO:
 1- URL Alias (useful for SEO optimization)
 2- CACHE SYSTEM for partial
+3- clear $_SESSION flash and errors and store them to a "special" variable before view output
