@@ -9,15 +9,24 @@ class HelloController extends ApplicationController {
 
     }
     
+    public function viewAll($id, $title) {
+    	$this->id = $id;
+    	$this->title = $title;
+	    
+    }
+    
     public function welcome() {
+    	#Redirect::to404('non puoi accedere');
         # if(!isset($this->queryString[0]))
         #         die("niente");
         #$this->links = Pagination::create('data', 1);
+        
         $this->word = "Hello World!!!";
         $greetings = "ciao";
         Flash::set('general', 'This is a flash message');
         Error::set('general', 'This is an error!!!');
         Error::set('general', 'This is another error!!!');
+
         Format::json(array('word' => $this->word));
         Format::xml(array('word' => $this->word));
         #Redirect::store(array('site', 'add_user'));
@@ -26,7 +35,7 @@ class HelloController extends ApplicationController {
     public function redirectTo()
     {
         Flash::set('general', "You did a redirect");
-        Redirect::to(array('hello','welcome'));
+        Redirect::to('hello/welcome',array('ciao' => '1'));
     }
     # EXAMPLE OF DB USAGE
     public function addAccount() {

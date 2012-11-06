@@ -5,7 +5,7 @@ class Config {
     /**
      * SITE
      * 
-     * (default value: "http://localhost:8888/fedom")
+     * (default value: "http://localhost:8888/framework)
      * 
      * @var string
      * @access public
@@ -22,7 +22,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $DOCS = "http://framework.dashy.it";
+    public static $DOCS = "http://phprisma.org/docs.html";
     
     /**
      * APP
@@ -33,7 +33,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $APP = "Framework";
+    public static $APP = "Frameworkv0.7";
     
     /**
      * SMTPhost
