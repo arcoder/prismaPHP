@@ -7,7 +7,7 @@ define('ROOT', str_replace('/public', '', dirname(__FILE__)));
 
 require ROOT . DS . 'config' . DS . 'Config.php';
 
-if (Config::$DEVELOPMENT_ENV == true) {
+if (Config::DEVELOPMENT_ENV == true) {
 	error_reporting(E_ALL);
     ini_set('display_errors', 'On');
 } else {
