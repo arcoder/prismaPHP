@@ -11,18 +11,10 @@ class Config {
      * @access public
      * @static
      */
-    public static $SITE = "http://localhost:8888/framework";
+    const INDEX_URL = "http://localhost:8888/framework";
     
-    /**
-     * DOCS
-     * 
-     * (default value: "http://framework.dashy.it")
-     * 
-     * @var string
-     * @access public
-     * @static
-     */
-    public static $DOCS = "http://phprisma.org/docs.html";
+
+    const DOCS = "http://phprisma.org/docs.html";
     
     /**
      * APP
@@ -33,7 +25,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $APP = "Frameworkv0.7";
+    const APP = "Frameworkv0.7";
     
     /**
      * SMTPhost
@@ -44,18 +36,8 @@ class Config {
      * @access public
      * @static
      */
-    public static $SMTPhost = "smtp.host.it";
+    const SMTP_HOST = "smtp.host.it";
    
-    /**
-     * SMTPusername
-     * 
-     * (default value: "info@fedom.it")
-     * 
-     * @var string
-     * @access public
-     * @static
-     */
-    public static $INFOemail = "infomyemail@host.it";
      
     /**
      * SMTPusername
@@ -66,7 +48,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $SMTPusername = "smtpuser";
+    const SMTP_USERNAME = "smtpuser";
     
     /**
      * SMTPpassword
@@ -77,7 +59,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $SMTPpassword = "smtppassword";
+    const SMTP_PASSWORD = "smtppassword";
     
     /**
      * SMTPport
@@ -88,7 +70,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $SMTPport = '25';
+    const SMTP_PORT = '25';
     
     /**
      * adapter
@@ -99,7 +81,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $adapter = 'mysql'; //mysql, postgresql, sqlite, no
+    const DB_ADAPTER = 'mysql'; //mysql, postgresql, sqlite, no
     
     /**
      * dbname
@@ -110,7 +92,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $dbname = 'framework';
+    const DB_DATABASE = 'framework';
     
     /**
      * dbhost
@@ -121,7 +103,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $dbhost = 'localhost'; //host or sqlite db file
+    const DB_HOST = 'localhost'; //host or sqlite db file
     
     /**
      * dbuser
@@ -132,7 +114,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $dbuser = 'root';
+    const DB_USER = 'root';
     
     /**
      * dbpassword
@@ -143,7 +125,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $dbpassword = 'root';
+    const DB_PASSWORD = 'root';
     
     /**
      * default_language
@@ -154,7 +136,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $default_language = 'it-IT';
+    const LANG_DEFAULT = 'it-IT';
     
     /**
      * http_language_enabled
@@ -165,7 +147,7 @@ class Config {
      * @access public
      * @static
      */
-    public static $http_language_enabled = false;
+    const LANG_MULTI_LANGUAGE = false;
     
 
 	 /**
@@ -177,6 +159,7 @@ class Config {
 	  * @access public
 	  * @static
 	  */
-	 public static $DEVELOPMENT_ENV = true;
+	 const DEVELOPMENT_ENV = true;
+
 }
 

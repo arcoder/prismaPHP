@@ -30,9 +30,9 @@ class Lang {
 	    $_SESSION['rc_lang'] = $lang;
 	    #print_r(self::getByClient());
     	#if(!isset($_SESSION['DFW_lang']))
-        #	$_SESSION['DFW_lang'] = Config::$default_language;
+        #	$_SESSION['DFW_lang'] = Config::LANG_DEFAULT;
         
-        #if(Config::$http_language_enabled == true)
+        #if(Config::LANG_MULTI_LANGUAGE == true)
         #{
         	/*
         	if(Lang::exists($lang))
@@ -42,7 +42,7 @@ class Lang {
             	if(Lang::exists(self::getByClient()))
                  	$_SESSION['DFW_lang'] = self::getByClient();
                  else
-                 	$_SESSION['DFW_lang'] = Config::$default_language;
+                 	$_SESSION['DFW_lang'] = Config::LANG_DEFAULT;
             } */
         #}
        
@@ -96,8 +96,8 @@ foreach ($langs as $lang => $val) {
     public static function load($basename) {
         if (isset($_SESSION['rc_lang']) && self::fileExists($_SESSION['rc_lang'], $basename))
             return simplexml_load_file(ROOT.DIRECTORY_SEPARATOR. 'lang' . DIRECTORY_SEPARATOR .  $_SESSION['rc_lang'] . DIRECTORY_SEPARATOR . $basename . '.xml');
-        elseif(self::fileExists(Config::$default_language, $basename)) {
-        	return simplexml_load_file(ROOT.DIRECTORY_SEPARATOR. 'lang' . DIRECTORY_SEPARATOR .  Config::$default_language . DIRECTORY_SEPARATOR . $basename . '.xml');
+        elseif(self::fileExists(Config::LANG_DEFAULT, $basename)) {
+        	return simplexml_load_file(ROOT.DIRECTORY_SEPARATOR. 'lang' . DIRECTORY_SEPARATOR .  Config::LANG_DEFAULT . DIRECTORY_SEPARATOR . $basename . '.xml');
         }
         else
         	throw new Exception('Required language is not available.');
@@ -177,18 +177,18 @@ class Pagination {
 class DB {
 
     public static function configure() {
-        switch(Config::$adapter) {
+        switch(Config::DB_ADAPTER) {
             case 'mysql':
-                    return R::setup("mysql:host=" . Config::$dbhost . ";dbname=" . Config::$dbname, Config::$dbuser, Config::$dbpassword);
+                    return R::setup("mysql:host=" . Config::DB_HOST . ";dbname=" . Config::DB_DATABASE, Config::DB_USER, Config::DB_PASSWORD);
                 break;
             case 'postgresql':
-                    return R::setup('pgsql:host='.Config::$dbhost .';dbname='.Config::$dbname,Config::$dbuser,Config::$dbpassword); //postgresql
+                    return R::setup('pgsql:host='.Config::DB_HOST .';dbname='.Config::DB_DATABASE,Config::DB_USER,Config::DB_PASSWORD); //postgresql
                 break;
             case 'sqlite':
-                    return R::setup('sqlite:'.Config::$dbhost,Config::$dbname,Config::$dbpassword); //sqlite
+                    return R::setup('sqlite:'.Config::DB_HOST,Config::DB_DATABASE,Config::DB_PASSWORD); //sqlite
                 break;       
         }
-        if(Config::$DEVELOPMENT_ENV == false)
+        if(Config::DEVELOPMENT_ENV == false)
         	R::freeze( true );
     }
 
@@ -199,9 +199,9 @@ class Mail {
     private static $transport;
 
     public static function configure() {
-        self::$transport = Swift_SmtpTransport::newInstance(Config::$SMTPhost, Config::$SMTPport)
-                ->setUsername(Config::$SMTPusername)
-                ->setPassword(Config::$SMTPpassword)
+        self::$transport = Swift_SmtpTransport::newInstance(Config::SMTP_HOST, Config::SMTP_PORT)
+                ->setUsername(Config::SMTP_USERNAME)
+                ->setPassword(Config::SMTP_PASSWORD)
         ;
     }
 
@@ -394,24 +394,23 @@ class Routes {
         return self::sanitize(mb_substr($path, 1));
 
     }
-				
+	
 		public static function build($default_controller, $default_action, $format) {
 			#print_r(parent::$routes);
-			$path = trim(self::getPath());
+			$path = self::getPath();
 			$external_path = explode('/',$path);
 			$alias = array();
-
+			Lang::configure(Config::LANG_DEFAULT);
+			## RICORDA DA FARE UNA FUNZIONE PER IL TIMEZONE
 			date_default_timezone_set('Europe/Rome');
-			if(Config::$http_language_enabled == true) {
+			if(Config::LANG_MULTI_LANGUAGE == true && Lang::exists($external_path[0])) {
 				Lang::configure($external_path[0]);
-				setlocale(LC_ALL, str_replace('-','_', $params[0]));
-				if(!Lang::exists($external_path[0])) {
-					Lang::configure($default_language);
-				}
 					#Redirect::to404('Pagina non disponibile in questa lingua.');
 				array_shift($external_path);
 				$path = implode('/', $external_path);
 			}
+			setlocale(LC_ALL, str_replace('-','_', Lang::get()));
+
 			if($path != '') {
 				$alias_and_route = self::checkAlias($external_path);
 				# COUNT CORRECTS EXPLODE PROBLEM WHEN IT HAS AN EMPTY ARRAY
@@ -444,7 +443,7 @@ class Routes {
 			$sequencer->setAfterfilter();
 			$sequencer->render(); 
 			} catch(SequencerException $e) {
-            	if (Config::$DEVELOPMENT_ENV == true) 
+            	if (Config::DEVELOPMENT_ENV == true) 
         			Redirect::to404($e->getMessage());
         		else
         			Redirect::to404('Cannot find the page :-(');			
@@ -454,7 +453,10 @@ class Routes {
 
     
     private static function sanitize($str) {
-	    return str_replace('-', '_', $str);
+		$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
+		$clean = preg_replace("%[^-/+|\w ]%", '', $clean);
+		$clean = strtolower(trim($clean, '_'));
+		return preg_replace("/[_|+ -]+/", '_', $clean);
     }
  
 
@@ -597,7 +599,7 @@ class Sequencer {
 		$this->objController->before_filter();		
 	}	
 	public function setAction() {
-		call_user_func_array(array($this->objController, $this->methodClass), $this->params);
+		call_user_func_array(array($this->objController, $this->methodClass), str_replace('_','-',$this->params));
 	}
 	public function setAfterFilter() {
 		$this->objController->after_filter();			
@@ -661,7 +663,7 @@ class Sequencer {
 	            return false;
 	        }
         } catch(SequencerException $e) {
-            	if (Config::$DEVELOPMENT_ENV == true) 
+            	if (Config::DEVELOPMENT_ENV == true) 
         			Redirect::to404($e->getMessage());
         		else
         		   	Redirect::to404('Cannot find the page.');
@@ -693,19 +695,19 @@ class Sequencer {
      * @return void
      */
     public static function link_to($params=null, $get=null) {
-    	$url = Config::$SITE . '/';
+    	$url = Config::INDEX_URL . '/';
     	if(is_string($params)) {
 	    	if (filter_var($params, FILTER_VALIDATE_URL) !== false) {
 	    		$url = $params;
 	    	} else {
 	    		if($params!= '') {
 	    			$file = pathinfo($params);
-	    			if(!isset($file['extension'])) $file['extension'] = 'html';
-	    			$ext = ($file != '') ? $file['extension'] : 'html';
+	    			#print_r($file);
+	    			if(!isset($file['extension'])) $ext = 'html'; else $ext = $file['extension'];
+	    			#$ext = ($file != '') ? $file['extension'] : 'html';
 	    			#echo self::toAscii($params);
 	    			$url_ar = explode('/', $file['dirname'].'/'.$file['filename']);
-	    			array_map(array('Sequencer', 'toAscii'), $url_ar);
-	    			$url = $url.implode('/', $url_ar).'.'.$ext;
+	    			$url = $url.implode('/', array_map(array('Sequencer', 'toAscii'), $url_ar)).'.'.$ext;
 		    	}
 	    	}	
     	} 
