@@ -367,6 +367,8 @@ class Routes {
 
 		private static function checkDefaultRouting($external_path) {
 			foreach(static::$routes as $row) {
+				if(!is_string($row))
+					throw new RoutesException('In AppRoutes.php \'static routes\' accepts strings');
 				$params = explode('/', $row);
 				
 				if(static::isAllowed($external_path, $params)) {
