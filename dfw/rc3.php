@@ -28,24 +28,6 @@ class Lang {
 
     public static function configure($lang) {
 	    $_SESSION['rc_lang'] = $lang;
-	    #print_r(self::getByClient());
-    	#if(!isset($_SESSION['DFW_lang']))
-        #	$_SESSION['DFW_lang'] = Config::LANG_DEFAULT;
-        
-        #if(Config::LANG_MULTI_LANGUAGE == true)
-        #{
-        	/*
-        	if(Lang::exists($lang))
-        		$_SESSION['DFW_lang'] = $lang;
-        	else
-        	{
-            	if(Lang::exists(self::getByClient()))
-                 	$_SESSION['DFW_lang'] = self::getByClient();
-                 else
-                 	$_SESSION['DFW_lang'] = Config::LANG_DEFAULT;
-            } */
-        #}
-       
     }
 
     /**
@@ -121,6 +103,12 @@ foreach ($langs as $lang => $val) {
 
     public static function set($lang) {
          $_SESSION['rc_lang'] = $lang;
+    }
+    
+    public static function isConfigured() {
+	    if(isset($_SESSION['rc_lang'])) 
+	    	return true;
+	    return false;
     }
 
 }
@@ -229,17 +217,25 @@ class Redirect {
         exit;
     }
     public static function to404($message='') {
-	    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found"); 
+	    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404); 
 	    require './404.php';
         exit;
     }
+    public static function to400($message='') {
+	    header($_SERVER["SERVER_PROTOCOL"].' 400 Bad Request', true, 400); 
+	    require './400.php';
+        exit;
+    }    
+    
+    
+    
     public static function store($params=null, $get=null) {
-    	$_SESSION['RC_store'] = array('params' => $params, 'get' => $get);
-        $_SESSION['RC_store_flag'] = 1;
+    	$_SESSION['rc_store'] = array('params' => $params, 'get' => $get);
+        $_SESSION['rc_store_flag'] = 1;
     }
     public static function back() {
-    	if(isset($_SESSION['RC_store'])) {
-			Header('Location:' . Sequencer::link_to($_SESSION['RC_store']['params'], $_SESSION['RC_store']['get']));
+    	if(isset($_SESSION['rc_store'])) {
+			Header('Location:' . Sequencer::link_to($_SESSION['rc_store']['params'], $_SESSION['rc_store']['get']));
         exit;	    
         }
     }
@@ -397,18 +393,43 @@ class Routes {
 	
 		public static function build($default_controller, $default_action, $format) {
 			#print_r(parent::$routes);
-			$path = self::getPath();
+			$path = str_replace('-', '_',self::getPath());
 			$external_path = explode('/',$path);
 			$alias = array();
-			Lang::configure(Config::LANG_DEFAULT);
+			
+			if(Config::LANG_MULTI_LANGUAGE == true) {
+				if(!Lang::isConfigured()) { 
+					$client_lang = strtolower(Lang::getByClient());
+					if(Lang::exists($client_lang) && trim($client_lang) !='')
+						Lang::configure($client_lang); 
+					else {
+						Lang::configure(Config::LANG_DEFAULT);
+						Redirect::to(Config::INDEX_URL);
+					}
+				}	else {
+					$lang = ($external_path[0] == '') ? Lang::get() : str_replace('_', '-', $external_path[0]);
+					if(Lang::exists($lang) && $lang != '') {
+						Lang::configure($lang);
+					} else {
+						Redirect::to404('Cannot find the page, the selected language is not available :-(');
+					}			
+				}
+				array_shift($external_path);
+			} else {
+				Lang::configure(Config::LANG_DEFAULT);
+			}
+			$path = implode('/', $external_path);	
+	
+
+			
 			## RICORDA DA FARE UNA FUNZIONE PER IL TIMEZONE
 			date_default_timezone_set('Europe/Rome');
-			if(Config::LANG_MULTI_LANGUAGE == true && Lang::exists($external_path[0])) {
-				Lang::configure($external_path[0]);
-					#Redirect::to404('Pagina non disponibile in questa lingua.');
-				array_shift($external_path);
-				$path = implode('/', $external_path);
-			}
+			#if(Config::LANG_MULTI_LANGUAGE == true && Lang::isConfigured()) {
+
+			#} else {
+			#	Redirect::to404('Cannot find the page, this language is not available :-(');	
+			#}
+
 			setlocale(LC_ALL, str_replace('-','_', Lang::get()));
 
 			if($path != '') {
@@ -453,10 +474,10 @@ class Routes {
 
     
     private static function sanitize($str) {
-		$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
-		$clean = preg_replace("%[^-/+|\w ]%", '', $clean);
-		$clean = strtolower(trim($clean, '_'));
-		return preg_replace("/[_|+ -]+/", '_', $clean);
+		if(preg_match('/[^[:lower:]0-9-\/]+/',$str, $e)) {
+				Redirect::to400('Parameters are not valid');
+		}
+		return $str;
     }
  
 
@@ -696,6 +717,9 @@ class Sequencer {
      */
     public static function link_to($params=null, $get=null) {
     	$url = Config::INDEX_URL . '/';
+    	if(Config::LANG_MULTI_LANGUAGE == true) 
+    		$url .= Lang::get(). '/';
+
     	if(is_string($params)) {
 	    	if (filter_var($params, FILTER_VALIDATE_URL) !== false) {
 	    		$url = $params;

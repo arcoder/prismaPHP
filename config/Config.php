@@ -136,7 +136,7 @@ class Config {
      * @access public
      * @static
      */
-    const LANG_DEFAULT = 'it-IT';
+    const LANG_DEFAULT = 'it-it';
     
     /**
      * http_language_enabled
@@ -147,7 +147,7 @@ class Config {
      * @access public
      * @static
      */
-    const LANG_MULTI_LANGUAGE = false;
+    const LANG_MULTI_LANGUAGE = true;
     
 
 	 /**
