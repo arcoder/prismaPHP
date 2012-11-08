@@ -720,7 +720,7 @@ class Sequencer {
     public static function link_to($params=null, $get=null) {
     	$url = Config::INDEX_URL . '/';
     	if(Config::LANG_MULTI_LANGUAGE == true) 
-    		$url .= Lang::get(). '/';
+    		$url .= Lang::get().'/';
 
     	if(is_string($params)) {
 	    	if (filter_var($params, FILTER_VALIDATE_URL) !== false) {
@@ -728,17 +728,19 @@ class Sequencer {
 	    	} else {
 	    		if($params!= '') {
 	    			$file = pathinfo($params);
-	    			#print_r($file);
 	    			if(!isset($file['extension'])) $ext = 'html'; else $ext = $file['extension'];
-	    			#$ext = ($file != '') ? $file['extension'] : 'html';
-	    			#echo self::toAscii($params);
-	    			$url_ar = explode('/', $file['dirname'].'/'.$file['filename']);
+	    			if($file['dirname'] != '.')
+	    				$str = $file['dirname'].'/'.$file['filename'];
+	    			else
+	    				$str = $file['filename'];
+	    			$url_ar = explode('/', $str);
 	    			$url = $url.implode('/', array_map(array('Sequencer', 'toAscii'), $url_ar)).'.'.$ext;
 		    	}
 	    	}	
     	} 
 	    if (is_array($get) && $get != null)
 	    	$url .= '?' . http_build_query($get);
+
 	    return $url; 
     }
     
