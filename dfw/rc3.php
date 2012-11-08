@@ -1065,7 +1065,7 @@ class Format {
  
 class Model extends RedBean_SimpleModel {
 
-    private $errors = array();
+    protected $errors = array();
     private $table;
 
     function __construct($tbl) {
