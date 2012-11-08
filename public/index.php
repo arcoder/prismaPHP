@@ -1,5 +1,4 @@
 <?php 
-
 define("IN", true);
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', str_replace('/public', '', dirname(__FILE__)));
@@ -21,10 +20,10 @@ session_start();
 
 
 function autoload($class) {
-    if (is_readable('model' . DS . $class . '.php'))
-        require 'model' . DS . $class . '.php';
-    if (is_readable('lib' . DS . $class . '.php'))
-        require 'lib' . DS . $class . '.php';
+    if (is_readable(ROOT . DS .'model' . DS . $class . '.php'))
+        require ROOT . DS . 'model' . DS . $class . '.php';
+    if (is_readable(ROOT . DS .'lib' . DS . $class . '.php'))
+        require ROOT . DS .'lib' . DS . $class . '.php';
 }
 
 
@@ -39,7 +38,7 @@ require ROOT . DS . 'config' . DS . 'AppRoute.php';
 require ROOT . DS . 'controller' . DS . 'ApplicationController.php';
 #$time_start = microtime(true);
 try {
-AppRoute::build('hello', 'welcome', 'html');
+AppRoute::build('docs', 'index', 'html');
 } catch(RoutesException $e) {
 	Redirect::to404($e->getMessage());
 } 
