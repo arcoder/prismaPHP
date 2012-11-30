@@ -147,7 +147,7 @@ class Config {
      * @access public
      * @static
      */
-    const LANG_MULTI_LANGUAGE = true;
+    const LANG_MULTI_LANGUAGE = false;
     
 
 	 /**

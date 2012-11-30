@@ -16,8 +16,6 @@ if (Config::DEVELOPMENT_ENV == true) {
     ini_set('error_log', ROOT . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'error.log');
 }
 
-session_start();
-
 
 function autoload($class) {
     if (is_readable(ROOT . DS .'model' . DS . $class . '.php'))
@@ -38,7 +36,7 @@ require ROOT . DS . 'config' . DS . 'AppRoute.php';
 require ROOT . DS . 'controller' . DS . 'ApplicationController.php';
 #$time_start = microtime(true);
 try {
-AppRoute::build('docs', 'index', 'html');
+AppRoute::build('hello', 'welcome', 'html');
 } catch(RoutesException $e) {
 	Redirect::to404($e->getMessage());
 } 

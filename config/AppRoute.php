@@ -3,9 +3,10 @@
 class AppRoute extends Routes {
 	
 		protected static $routes = array(
-							':all/:all',
+							':all',
 							'posts/view/:all',
-							'hello/view_all/:numeric/:alnum',
+							'hello/view_all/:numeric/:printable',
+							'hello/:all',
 							#array('shop','_ALL_'),
 							#array('shop', 'product','_ALL_'), 
 							':all'

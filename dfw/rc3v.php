@@ -1,5 +1,4 @@
 <?php
-
 /*
   Copyright (c) 2012 Alberto Ruffo
 
@@ -21,6 +20,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
  */
+
 
 class Lang {
 
@@ -48,8 +48,7 @@ class Lang {
 
                 // set default to 1 for any without q factor
                 foreach ($langs as $lang => $val) {
-                    if ($val === '')
-                        $langs[$lang] = 1;
+                    if ($val === '') $langs[$lang] = 1;
                 }
 
                 // sort list based on value
@@ -59,15 +58,16 @@ class Lang {
         $one = array_keys($langs);
         return $one[0];
         /*
-          // look through sorted list and use first one that matches our languages
-          foreach ($langs as $lang => $val) {
-          if (strpos($lang, 'de') === 0) {
-          // show German site
-          } else if (strpos($lang, 'en') === 0) {
-          // show English site
-          }
-          }
-         */
+        // look through sorted list and use first one that matches our languages
+        foreach ($langs as $lang => $val) {
+            if (strpos($lang, 'de') === 0) {
+                // show German site
+            } else if (strpos($lang, 'en') === 0) {
+                // show English site
+            }
+        }
+        */
+
     }
 
     /**
@@ -77,28 +77,28 @@ class Lang {
      */
     public static function load($basename) {
         if (isset($_SESSION['rc_lang']) && self::fileExists($_SESSION['rc_lang'], $basename))
-            return simplexml_load_file(ROOT . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . $_SESSION['rc_lang'] . DIRECTORY_SEPARATOR . $basename . '.xml');
-        elseif (self::fileExists(Config::LANG_DEFAULT, $basename)) {
-            return simplexml_load_file(ROOT . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . Config::LANG_DEFAULT . DIRECTORY_SEPARATOR . $basename . '.xml');
+            return simplexml_load_file(ROOT.DIRECTORY_SEPARATOR. 'lang' . DIRECTORY_SEPARATOR .  $_SESSION['rc_lang'] . DIRECTORY_SEPARATOR . $basename . '.xml');
+        elseif(self::fileExists(Config::LANG_DEFAULT, $basename)) {
+            return simplexml_load_file(ROOT.DIRECTORY_SEPARATOR. 'lang' . DIRECTORY_SEPARATOR .  Config::LANG_DEFAULT . DIRECTORY_SEPARATOR . $basename . '.xml');
         }
         else
             throw new Exception('Required language is not available.');
     }
 
-    public static function fileExists($language, $basename) {
-        if (file_exists(ROOT . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $basename . '.xml'))
+    public static function fileExists( $language, $basename) {
+        if (file_exists(ROOT.DIRECTORY_SEPARATOR. 'lang' . DIRECTORY_SEPARATOR .  $language . DIRECTORY_SEPARATOR . $basename . '.xml'))
             return true;
         return false;
     }
 
     public static function exists($dirname) {
-        if (file_exists(ROOT . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . $dirname))
+        if (file_exists(ROOT.DIRECTORY_SEPARATOR. 'lang' . DIRECTORY_SEPARATOR . $dirname))
             return true;
         return false;
     }
 
     public static function get() {
-        return $_SESSION['rc_lang'];
+        return  $_SESSION['rc_lang'];
     }
 
     public static function set($lang) {
@@ -106,7 +106,7 @@ class Lang {
     }
 
     public static function isConfigured() {
-        if (isset($_SESSION['rc_lang']))
+        if(isset($_SESSION['rc_lang']))
             return true;
         return false;
     }
@@ -115,7 +115,7 @@ class Lang {
 
 class Pagination {
 
-    public static function create($tbl, $from = 1, $howmany = 10, $where = '1', $words = array()) {
+    public static function create($tbl, $from=1, $howmany=10, $where='1', $words=array()) {
         if ($from != 0)
             $page = (int) $from * $howmany - $howmany;
         else
@@ -125,7 +125,7 @@ class Pagination {
         return array(R::find($tbl, $C_where, $words), $howmany, count(R::find($tbl, $where, $words)));
     }
 
-    public static function createWithRelated($bean, $tbl, $from = 1, $howmany = 10, $where = '1', $words = array()) {
+    public static function createWithRelated($bean, $tbl, $from=1, $howmany=10, $where='1', $words=array()) {
         if ($from != 0)
             $page = (int) $from * $howmany - $howmany;
         else
@@ -136,7 +136,7 @@ class Pagination {
         return R::related($bean, $tbl, $where, $words);
     }
 
-    public static function createFromSQL($resource, $sql, $tbl, $from = 1, $howmany = 10) {
+    public static function createFromSQL($resource, $sql, $tbl, $from=1, $howmany=10) {
         if ($from != 0)
             $page = (int) $from * $howmany - $howmany;
         else
@@ -144,7 +144,7 @@ class Pagination {
         return R::convertToBeans($tbl, $resource->get($sql . ' LIMIT ' . ($page) . ',' . ($howmany)));
     }
 
-    public function links($arr, $current_page = 1, $url = array(), $get = array()) {
+    public function links($arr, $current_page=1, $url=array(), $get=array()) {
         $tot_pages = ceil($arr[2] / count($arr[0]));
         $paginazione = "<div id='pagination_links'><p>Pagine totali: " . $tot_pages . "
 		[";
@@ -165,19 +165,19 @@ class Pagination {
 class DB {
 
     public static function configure() {
-        switch (Config::DB_ADAPTER) {
+        switch(Config::DB_ADAPTER) {
             case 'mysql':
                 return R::setup("mysql:host=" . Config::DB_HOST . ";dbname=" . Config::DB_DATABASE, Config::DB_USER, Config::DB_PASSWORD);
                 break;
             case 'postgresql':
-                return R::setup('pgsql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_DATABASE, Config::DB_USER, Config::DB_PASSWORD); //postgresql
+                return R::setup('pgsql:host='.Config::DB_HOST .';dbname='.Config::DB_DATABASE,Config::DB_USER,Config::DB_PASSWORD); //postgresql
                 break;
             case 'sqlite':
-                return R::setup('sqlite:' . Config::DB_HOST, Config::DB_DATABASE, Config::DB_PASSWORD); //sqlite
+                return R::setup('sqlite:'.Config::DB_HOST,Config::DB_DATABASE,Config::DB_PASSWORD); //sqlite
                 break;
         }
-        if (Config::DEVELOPMENT_ENV == false)
-            R::freeze(true);
+        if(Config::DEVELOPMENT_ENV == false)
+            R::freeze( true );
     }
 
 }
@@ -188,8 +188,8 @@ class Mail {
 
     public static function configure() {
         self::$transport = Swift_SmtpTransport::newInstance(Config::SMTP_HOST, Config::SMTP_PORT)
-                ->setUsername(Config::SMTP_USERNAME)
-                ->setPassword(Config::SMTP_PASSWORD)
+            ->setUsername(Config::SMTP_USERNAME)
+            ->setPassword(Config::SMTP_PASSWORD)
         ;
     }
 
@@ -212,30 +212,29 @@ class Redirect {
      *
      * @return void
      */
-    public static function to($params = null, $get = null) {
+    public static function to($params=null, $get=null) {
         Header('Location:' . Sequencer::link_to($params, $get));
         exit;
     }
-
-    public static function to404($message = '') {
-        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+    public static function to404($message='') {
+        header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
         require './404.php';
         exit;
     }
-
-    public static function to400($message = '') {
-        header($_SERVER["SERVER_PROTOCOL"] . ' 400 Bad Request', true, 400);
+    public static function to400($message='') {
+        header($_SERVER["SERVER_PROTOCOL"].' 400 Bad Request', true, 400);
         require './400.php';
         exit;
     }
 
-    public static function store($params = null, $get = null) {
+
+
+    public static function store($params=null, $get=null) {
         $_SESSION['rc_store'] = array('params' => $params, 'get' => $get);
         $_SESSION['rc_store_flag'] = 1;
     }
-
     public static function back() {
-        if (isset($_SESSION['rc_store'])) {
+        if(isset($_SESSION['rc_store'])) {
             Header('Location:' . Sequencer::link_to($_SESSION['rc_store']['params'], $_SESSION['rc_store']['get']));
             exit;
         }
@@ -245,8 +244,8 @@ class Redirect {
 
 class Error {
 
-    private static $messages = array();
 
+    private static $messages = array();
     /**
      * Sets an error alert if is set
      *
@@ -277,11 +276,12 @@ class Error {
      *
      * @return void
      */
-    public static function get($owner, $style = true) {
+    public static function get($owner, $style=true) {
         if (isset($_SESSION['rc_error'][$owner]) && count($_SESSION['rc_error'][$owner]) > 0) {
-            if ($style == true) {
+            if ($style == true)
+            {
                 echo '<ul class=\'rc_error\'>';
-                foreach ($_SESSION['rc_error'][$owner] as $msg) {
+                foreach($_SESSION['rc_error'][$owner] as $msg) {
                     echo '<li style=\'color:#A00;\'>' . $msg . '</li>';
                 }
                 echo '</ul>';
@@ -296,8 +296,8 @@ class Error {
 
 class Flash {
 
-    private static $messages = array();
 
+    private static $messages = array();
     /**
      * Sets a flash alert if is set
      *
@@ -328,11 +328,12 @@ class Flash {
      *
      * @return void
      */
-    public static function get($owner, $style = true) {
+    public static function get($owner, $style=true) {
         if (isset($_SESSION['rc_flash'][$owner]) && count($_SESSION['rc_flash'][$owner]) > 0) {
-            if ($style == true) {
+            if ($style == true)
+            {
                 echo '<ul class=\'rc_flash\'>';
-                foreach ($_SESSION['rc_flash'][$owner] as $msg) {
+                foreach($_SESSION['rc_flash'][$owner] as $msg) {
                     echo '<li style=\'color:#009900;\'>' . $msg . '</li>';
                 }
                 echo '</ul>';
@@ -345,96 +346,19 @@ class Flash {
 
 }
 
-function exception_handler($exception) {
-    #echo "Uncaught exception: " . $exception->getMessage() . " on line ". $exception->getcode()."\n";
-    trigger_error($exception->getMessage() . ', line: ' . $exception->getLine() . ' in: ' . $exception->getFile());
-}
-
-function error_handler($level, $message, $file, $line, $context) {
-    //Handle user errors, warnings, and notices ourself
-    if ($level === E_USER_ERROR || $level === E_USER_WARNING || $level === E_USER_NOTICE) {
-        echo '<strong>Error:</strong> ' . $message;
-        return(true); //And prevent the PHP error handler from continuing
-    }
-    return(false); //Otherwise, use PHP's error handler
-}
-
-set_error_handler('error_handler');
-set_exception_handler('exception_handler');
-
-class Url {
-
-    private $path;
-    private $underscore_path;
-
-    public function __construct($url = null) {
-        if (!is_null($url)) {
-            $this->path = $url;
-            $this->update();
-        }
-        else
-            trigger_error('Impossibile processare la richiesta.');
-    }
-
-    public static function configure() {
-        return new self(self::resolvePath());
-    }
-
-    public function get() {
-        return $this->path;
-    }
-
-    public function toArray() {
-        return explode('/', $this->path);
-    }
-
-    public function undescoreToArray() {
-        return explode('/', $this->underscore_path);
-    }
-
-    private function update() {
-        $this->underscore_path = str_replace('-', '_', $this->path);
-    }
-
-    public function underscore() {
-        return $this->underscore_path;
-    }
-
-    private static function resolvePath() {
-        if (isset($_SERVER['ORIG_PATH_INFO']))
-            $path = $_SERVER['ORIG_PATH_INFO'];
-        elseif (isset($_SERVER['PATH_INFO']))
-            $path = $_SERVER['PATH_INFO'];
-        else
-            $path = '/';
-        return mb_substr($path, 1);
-        #return self::sanitize();
-    }
-
-    public function isSanitized() {
-        if (preg_match('/[^[:lower:]0-9-\/]+/', $this->path, $e)) {
-            return false;
-        }
-        return true;
-    }
-
-}
-
-class RoutesException extends Exception {
-    
-}
-
+class RoutesException extends Exception {}
 class Routes {
 
     protected static $routes = array();
     protected static $aliases = array();
+
     protected static $status = false;
 
     private static function checkAlias($external_path) {
-        foreach (static::$aliases as $id_row => $row) {
-            $alias_params = explode('/', $row[0]);
+        foreach(static::$aliases as $id_row => $row) {
+            $alias_params   = explode('/', $row[0]);
             $default_params = explode('/', $row[1]);
-            if (self::isAllowed($external_path, $alias_params)) {
+            if(self::isAllowed($external_path, $alias_params)) {
                 static::$status = true;
                 return array($row[0], $row[1]);
             }
@@ -442,11 +366,12 @@ class Routes {
     }
 
     private static function checkDefaultRouting($external_path) {
-        foreach (static::$routes as $row) {
-            if (!is_string($row))
+        foreach(static::$routes as $row) {
+            if(!is_string($row))
                 throw new RoutesException('In AppRoutes.php \'static routes\' accepts strings');
             $params = explode('/', $row);
-            if (static::isAllowed($external_path, $params)) {
+
+            if(static::isAllowed($external_path, $params)) {
                 #echo 'va bene<br>';
                 #echo 'ROUTING SELECTED => "'.$row.'"';
                 static::$status = true;
@@ -465,29 +390,28 @@ class Routes {
         else
             $path = '/';
         return self::sanitize(mb_substr($path, 1));
+
     }
 
     public static function build($default_controller, $default_action, $format) {
-        $session = Session::get_instance();
-        $url = Url::configure();
-        if (!$url->isSanitized())
-            Redirect::to400('Parameters are not valid');
+
         #print_r(parent::$routes);
-        $external_path = $url->undescoreToArray();
+        $path = str_replace('-', '_',self::getPath());
+        $external_path = explode('/',$path);
         $alias = array();
 
-        if (Config::LANG_MULTI_LANGUAGE == true) {
-            if (!Lang::isConfigured()) {
+        if(Config::LANG_MULTI_LANGUAGE == true) {
+            if(!Lang::isConfigured()) {
                 $client_lang = strtolower(Lang::getByClient());
-                if (Lang::exists($client_lang) && trim($client_lang) != '')
+                if(Lang::exists($client_lang) && trim($client_lang) !='')
                     Lang::configure($client_lang);
                 else {
                     Lang::configure(Config::LANG_DEFAULT);
                     Redirect::to(Config::INDEX_URL);
                 }
-            } else {
+            }	else {
                 $lang = ($external_path[0] == '') ? Lang::get() : str_replace('_', '-', $external_path[0]);
-                if (Lang::exists($lang) && $lang != '') {
+                if(Lang::exists($lang) && $lang != '') {
                     Lang::configure($lang);
                 } else {
                     Redirect::to404('Cannot find the page, the selected language is not available :-(');
@@ -504,19 +428,20 @@ class Routes {
         ## RICORDA DA FARE UNA FUNZIONE PER IL TIMEZONE
         date_default_timezone_set('Europe/Rome');
         #if(Config::LANG_MULTI_LANGUAGE == true && Lang::isConfigured()) {
+
         #} else {
         #	Redirect::to404('Cannot find the page, this language is not available :-(');
         #}
 
-        setlocale(LC_ALL, str_replace('-', '_', Lang::get()));
+        setlocale(LC_ALL, str_replace('-','_', Lang::get()));
 
-        if ($path != '') {
+        if($path != '') {
             $alias_and_route = self::checkAlias($external_path);
             # COUNT CORRECTS EXPLODE PROBLEM WHEN IT HAS AN EMPTY ARRAY
-            if ($i = substr_count($alias_and_route[0], '/'))
-                $alias = explode('/', $alias_and_route[0], $i + 1);
+            if($i = substr_count($alias_and_route[0],'/'))
+                $alias    = explode('/',$alias_and_route[0], $i+1);
             $strroute = $alias_and_route[1];
-            if (self::$status == false) {
+            if(self::$status == false) {
                 $strroute = self::checkDefaultRouting($external_path);
             }
             $route = explode('/', $strroute);
@@ -524,38 +449,41 @@ class Routes {
             self::$status = true;
             $route = array($default_controller, $default_action);
         }
-        if (self::$status == false)
+        if(self::$status == false)
             throw new RoutesException('I cannot routing this request. Sorry :-(');
         else
-        #echo '<br>ok, require: <b>'.$route.'</b> generated from: <b>'.$path.'</b>';
-        # FILE EXTENSION hello/welcome.html
+            #echo '<br>ok, require: <b>'.$route.'</b> generated from: <b>'.$path.'</b>';
+            # FILE EXTENSION hello/welcome.html
             $ext = parse_url(pathinfo($_SERVER['REQUEST_URI'], PATHINFO_EXTENSION), PHP_URL_PATH);
 
         # CORRECTION FOR DEFAULT APP PAGE hello/welcome -> domain.ext <- without extension
-        if ($ext != $format && $ext != '')
-            $format = $ext;
+        if ($ext != $format && $ext != '') $format = $ext;
         try {
             $sequencer = Sequencer::getInstance($external_path, $route, $format, $alias);
             $sequencer->phpSettings();
-            $sequencer->setController($session);
+            $sequencer->setController();
             $sequencer->setBeforefilter();
             $sequencer->setAction();
             $sequencer->setAfterfilter();
             $sequencer->render();
-        } catch (SequencerException $e) {
+        } catch(SequencerException $e) {
             if (Config::DEVELOPMENT_ENV == true)
-                echo $e->getMessage();
+                Redirect::to404($e->getMessage());
             else
                 Redirect::to404('Cannot find the page :-(');
         }
     }
 
+
+
     private static function sanitize($str) {
-        if (preg_match('/[^[:lower:]0-9-\/]+/', $str, $e)) {
+        if(preg_match('/[^[:lower:]0-9-\/]+/',$str, $e)) {
             Redirect::to400('Parameters are not valid');
         }
         return $str;
     }
+
+
 
     public static $constArray = array(':all', ':numeric', ':alnum', ':printable');
 
@@ -565,10 +493,10 @@ class Routes {
         $good = true;
 
         // ESEGUO SOLO SE LE DIMENSIONI DEI VETTORI SONO LE STESSE
-        if ($numOp1 == $numOp2) {
+        if($numOp1 == $numOp2) {
             // Scorro le colonne
-            for ($i = 0; $i < $numOp1; $i++) {
-                if (!self::verify($op1[$i], $op2[$i])) {
+            for($i = 0; $i < $numOp1; $i++) {
+                if(!self::verify($op1[$i], $op2[$i])) {
                     $good = false;
                     break;
                 }
@@ -579,83 +507,81 @@ class Routes {
     }
 
     private static function verify($val1, $val2) {
-        if ($val1 != $val2) {
-            if ($val1[0] == ":") {
+        if($val1 != $val2) {
+            if($val1[0] == ":") {
                 $type = $val1;
-                $val = $val2;
-            } elseif ($val2[0] == ':') {
+                $val  = $val2;
+            }
+            elseif($val2[0] == ':') {
                 $type = $val2;
                 $val = $val1;
             }
             else
                 return false;
         } else {
-            if (!in_array($val1, self::$constArray) && !in_array($val2, self::$constArray)) {
+            if(!in_array($val1, self::$constArray) && !in_array($val2, self::$constArray)) {
                 return true;
             }
             return false;
         }
-        #if preg_match('/:numeric\{([0-9]+)\}|:numeric$/',$type, $e)
-        #if(isset($e[1]) and strlen($val)>$e[1])
-        if ($type == ':numeric') {
-            if (ctype_digit($val)) {
+        if($type == ':numeric') {
+            if(ctype_digit($val)) {
                 return true;
             } else
                 return false;
-        } elseif ($type == ':alnum') {
-            if (ctype_alnum($val)) {
+        } elseif($type == ':alnum') {
+            if(ctype_alnum($val)) {
                 return true;
             } else
                 return false;
-        } elseif ($type == ':printable') {
-            if (ctype_print($val)) {
+        } elseif($type == ':printable') {
+            if(ctype_print($val)) {
                 return true;
             } else
                 return false;
-        } elseif ($type == ':all') {
-            if (ctype_print($val)) {
+        } elseif($type == ':all') {
+            if(ctype_print($val)) {
                 return true;
             } else
                 return false;
-        } else {
+        } else
+        {
             return false;
         }
     }
 
 }
 
-class SequencerException extends Exception {
-    
-}
+class SequencerException extends Exception {}
 
 class Sequencer {
-
     private static $instance = null;
+
     private $controller;
     private $action;
     private $params = array();
     private $format;
+
     private $objController;
+
     private $classController;
     private $methodClass;
 
     private function __construct($path, $route, $format, $alias) {
-        if (count($route) < 2) {
+        if(count($route) < 2) {
             $route[] = 'index';
         }
-        if (in_array($route[0], Routes::$constArray)) {
+        if(in_array($route[0], Routes::$constArray)) {
             $this->controller = $path[0];
-        } else
-            $this->controller = $route[0];
-        if (in_array($route[1], Routes::$constArray)) {
-            $this->action = $path[1];
-        } else
-            $this->action = $route[1];
+        } else $this->controller = $route[0];
+        if(in_array($route[1], Routes::$constArray)) {
+            $this->action     = $path[1];
+        } else $this->action     = $route[1];
 
         $i = 0;
-        if (count($alias) > 1) {
-            foreach ($alias as $piece) {
-                if (in_array($piece, Routes::$constArray)) {
+        if(count($alias) > 1) {
+            foreach($alias as $piece) {
+                if(in_array($piece, Routes::$constArray)) {
                     $this->params[] = $path[$i];
                 }
                 $i++;
@@ -663,44 +589,42 @@ class Sequencer {
         } else {
             array_shift($route);
             array_shift($route);
-            foreach ($route as $piece) {
-                if (in_array($piece, Routes::$constArray)) {
-                    $this->params[] = $path[$i + 2];
+            foreach($route as $piece) {
+                if(in_array($piece, Routes::$constArray)) {
+                    $this->params[] = $path[$i+2];
                 }
                 $i++;
             }
         }
 
-        $this->format = $format;
+        $this->format     = $format;
 
-        $this->classController = self::separatorToCamel($this->controller, '_', true) . 'Controller';
-        $this->methodClass = self::separatorToCamel($this->action, '_' . false);
+        $this->classController = self::separatorToCamel($this->controller,'_', true).'Controller';
+        $this->methodClass     = self::separatorToCamel($this->action,'_'. false);
     }
 
-    public function setController($session) {
-        if ($this->controllerExists($this->classController)) {
-            require ROOT . DIRECTORY_SEPARATOR . 'controller' . DIRECTORY_SEPARATOR . $this->classController . '.php';
+    public function setController() {
+        if($this->controllerExists($this->classController)) {
+            require ROOT.DIRECTORY_SEPARATOR. 'controller' . DIRECTORY_SEPARATOR . $this->classController . '.php';
             if (class_exists($this->classController) && method_exists($this->classController, $this->methodClass) && !in_array($this->methodClass, array('beforeFilter', 'afterFilter', 'configureVars'))) {
 
                 Mail::configure();
                 DB::configure();
                 Format::configure($this->controller, $this->action, $this->format);
                 $this->objController = new $this->classController();
-                $this->objController->__load_vars($this->controller, $this->action, $session);
-            } else {
+                $this->objController->__load_vars($this->controller, $this->action);
+
+            }  else {
                 throw new SequencerException('Controller class found, but i cannot use ' . $this->classController . '#' . $this->methodClass);
             }
         }
     }
-
     public function setBeforeFilter() {
         $this->objController->before_filter();
     }
-
     public function setAction() {
-        call_user_func_array(array($this->objController, $this->methodClass), str_replace('_', '-', $this->params));
+        call_user_func_array(array($this->objController, $this->methodClass), str_replace('_','-',$this->params));
     }
-
     public function setAfterFilter() {
         $this->objController->after_filter();
     }
@@ -745,7 +669,7 @@ class Sequencer {
     }
 
     public static function getInstance($path, $route, $format, $alias) {
-        if (self::$instance == null)
+        if(self::$instance == null)
             self::$instance = new Sequencer($path, $route, $format, $alias);
         return self::$instance;
     }
@@ -756,20 +680,20 @@ class Sequencer {
      */
     private function controllerExists($classController) {
         try {
-            if (file_exists(ROOT . DIRECTORY_SEPARATOR . 'controller' . DIRECTORY_SEPARATOR . $classController . '.php'))
+            if (file_exists(ROOT.DIRECTORY_SEPARATOR. 'controller' . DIRECTORY_SEPARATOR . $classController . '.php'))
                 return true;
             else {
                 throw new SequencerException('I cannot load \'' . $classController . '.php\', file doesn\'t exist.');
                 return false;
             }
-        } catch (SequencerException $e) {
+        } catch(SequencerException $e) {
             if (Config::DEVELOPMENT_ENV == true)
-                echo $e->getMessage();
+                Redirect::to404($e->getMessage());
             else
                 Redirect::to404('Cannot find the page.');
+
         }
     }
-
     /**
      * Converts string to camel notation
      *
@@ -778,7 +702,7 @@ class Sequencer {
      *
      * @return string
      */
-    public static function separatorToCamel($str, $separator = '-', $ucfirst = false) {
+    public static function separatorToCamel($str, $separator='-', $ucfirst = false) {
         $parts = explode($separator, $str);
         $parts = $parts ? array_map('ucfirst', $parts) : array($str);
         $parts[0] = $ucfirst ? ucfirst($parts[0]) : lcfirst($parts[0]);
@@ -794,26 +718,24 @@ class Sequencer {
      * @param mixed $get (default: null)
      * @return void
      */
-    public static function link_to($params = null, $get = null) {
+    public static function link_to($params=null, $get=null) {
         $url = Config::INDEX_URL . '/';
-        if (Config::LANG_MULTI_LANGUAGE == true)
-            $url .= Lang::get() . '/';
+        if(Config::LANG_MULTI_LANGUAGE == true)
+            $url .= Lang::get().'/';
 
-        if (is_string($params)) {
+        if(is_string($params)) {
             if (filter_var($params, FILTER_VALIDATE_URL) !== false) {
                 $url = $params;
             } else {
-                if ($params != '') {
+                if($params!= '') {
                     $file = pathinfo($params);
-                    $ext = 'html';
-                    if (isset($file['extension']))
-                        $ext = $file['extension'];
-                    if ($file['dirname'] != '.')
-                        $str = $file['dirname'] . '/' . $file['filename'];
+                    if(!isset($file['extension'])) $ext = 'html'; else $ext = $file['extension'];
+                    if($file['dirname'] != '.')
+                        $str = $file['dirname'].'/'.$file['filename'];
                     else
                         $str = $file['filename'];
                     $url_ar = explode('/', $str);
-                    $url = $url . implode('/', array_map(array('Sequencer', 'toAscii'), $url_ar)) . '.' . $ext;
+                    $url = $url.implode('/', array_map(array('Sequencer', 'toAscii'), $url_ar)).'.'.$ext;
                 }
             }
         }
@@ -823,9 +745,9 @@ class Sequencer {
         return $url;
     }
 
-    public static function toAscii($str, $replace = array(), $delimiter = '-', $maxLength = 200) {
-        if (!empty($replace)) {
-            $str = str_replace((array) $replace, ' ', $str);
+    public static function toAscii($str, $replace=array(), $delimiter='-', $maxLength=200) {
+        if( !empty($replace) ) {
+            $str = str_replace((array)$replace, ' ', $str);
         }
 
         $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
@@ -836,8 +758,8 @@ class Sequencer {
         return $clean;
     }
 
-}
 
+}
 /**
  * Controller
  * @file			rc.php
@@ -851,11 +773,10 @@ class Sequencer {
  * with this source code in the file LICENSE.
  *
  */
-class ControllerException extends Exception {
-    
-}
+class ControllerException extends Exception {}
 
 abstract class Controller extends stdClass {
+
 
     /**
      * controller
@@ -865,7 +786,6 @@ abstract class Controller extends stdClass {
      * @static
      */
     protected static $controller;
-
     /**
      * action
      *
@@ -874,7 +794,6 @@ abstract class Controller extends stdClass {
      * @static
      */
     protected static $action;
-
     /**
      * @var object
      * Contains (object)$_POST
@@ -891,14 +810,16 @@ abstract class Controller extends stdClass {
 
     /**
      * @var object
-     * Contains (object)$_SESSION
+     * Contains (object)$_REQUEST
      *
      */
-    private $session;
+    public $request;
+
 
     function __construct() {
-        
+
     }
+
 
     /**
      * __load_vars function.
@@ -908,13 +829,14 @@ abstract class Controller extends stdClass {
      * @param mixed $RCaction
      * @return void
      */
-    final public function __load_vars($RCcontroller, $RCaction, $sess) {
+    final public function __load_vars($RCcontroller, $RCaction) {
         $this->post = (object) $_POST;
         $this->get = (object) $_GET;
+        $this->request = (object) $_REQUEST;
         self::$controller = $RCcontroller;
         self::$action = $RCaction;
-        $this->session = $sess;
-        CSRF::guard();
+        $this->session = Session::get_instance(ROOT . DIRECTORY_SEPARATOR.'tmp');
+
     }
 
     /**
@@ -923,7 +845,7 @@ abstract class Controller extends stdClass {
      * @return void
      */
     public function before_filter() {
-        
+
     }
 
     /**
@@ -932,7 +854,7 @@ abstract class Controller extends stdClass {
      * @return void
      */
     public function after_filter() {
-        
+
     }
 
     /**
@@ -947,13 +869,13 @@ abstract class Controller extends stdClass {
      *
      * @return void
      */
-    final protected function filter($method, $actions = array(), $args = array()) {
+    final protected function filter($method, $actions = array(), $args=array()) {
         $ref = new ReflectionObject($this);
         try {
             if (!$ref->getMethod($method)->isProtected())
                 throw new ControllerException(' \'' . $method . '\' METHOD must be protected');
         } catch (ControllerException $e) {
-            echo $e->getMessage();
+            die($e->getMessage());
         }
 
         if (is_array($actions) && count($actions) == 1) {
@@ -982,7 +904,7 @@ abstract class Controller extends stdClass {
                     case 'only':
                         $flag = 0;
                         foreach ($actions[$key] as $action) {
-                            if (Sequencer::separatorToCamel(self::$action, '_') == $action)
+                            if (Sequencer::separatorToCamel(self::$action,'_') == $action)
                                 $flag = 1;
                         }
                         if ($flag == 1) {
@@ -1091,8 +1013,10 @@ class Format {
             $xml->endElement();
             echo $xml->outputMemory(true);
             exit;
+
         }
     }
+
 
     public static function writeXML(XMLWriter $xml, $data) {
         if (is_object($data))
@@ -1140,9 +1064,7 @@ class Format {
  * with this source code in the file LICENSE.
  *
  */
-class ModelException extends Exception {
-    
-}
+class ModelException extends Exception {}
 
 class Model extends RedBean_SimpleModel {
 
@@ -1152,25 +1074,24 @@ class Model extends RedBean_SimpleModel {
     function __construct($tbl) {
         $this->table = $tbl;
     }
-
     protected function update() {
         $this->throwModelException();
-    }
 
+    }
     protected function after_update() {
         $this->throwModelException();
-    }
 
+    }
     protected function open() {
         $this->throwModelException();
-    }
 
+    }
     protected function dispense() {
         $this->throwModelException();
     }
 
     private function throwModelException() {
-        if (count($this->errors) > 0) {
+        if(count($this->errors)>0){
             throw new ModelException();
         }
     }
@@ -1182,8 +1103,8 @@ class Model extends RedBean_SimpleModel {
     }
 
     protected function validates_presence_for($words, $message) {
-        if (count($words) > 0) {
-            foreach ($words as $field) {
+        if(count($words)>0) {
+            foreach($words as $field) {
                 if (trim($this->$field) == '') {
                     $this->errors[$field][] = $message;
                 }
@@ -1198,8 +1119,8 @@ class Model extends RedBean_SimpleModel {
     }
 
     protected function validates_ctype_for($words, $ctype, $message) {
-        if (count($words) > 0) {
-            foreach ($words as $field) {
+        if(count($words)>0) {
+            foreach($words as $field) {
                 if (!call_user_func_array('ctype_' . $ctype, array($this->$field))) {
                     $this->errors[$field][] = $message;
                 }
@@ -1232,17 +1153,17 @@ class Model extends RedBean_SimpleModel {
                             $this->errors[$word][] = $message;
                         break;
                     default: throw new ModelException('validates_length_of, you must define an option');
+
                 }
             }
         }
     }
-
     protected function validates_length_for($words, $options, $message) {
-        if (count($words) > 0) {
+        if(count($words)>0) {
             if (count($options) == 0)
                 throw new ModelException('validates_length_of, you must define an option');
             else {
-                foreach ($words as $field) {
+                foreach($words as $field) {
                     foreach ($options as $type => $value) {
                         switch ($type) {
                             case 'maximum':
@@ -1259,19 +1180,20 @@ class Model extends RedBean_SimpleModel {
                                     $this->errors[$field][] = $message;
                                 break;
                             default: throw new ModelException('validates_length_for, you must define an option');
+
                         }
                     }
                 }
             }
         }
     }
-
     protected function validates_confirmed_field($field, $message) {
-        $cfield = 'confirmed_' . $field;
-        if ($this->$field != $this->$cfield)
+        $cfield = 'confirmed_'.$field;
+        if($this->$field != $this->$cfield)
             $this->errors[$field][] = $message;
         $this->$cfield = null;
     }
+
 
     protected function validates_uniqueness_of($field, $message) {
         if (R::findOne($this->table, $field . '=?', array($this->$field)) != null)
@@ -1279,8 +1201,8 @@ class Model extends RedBean_SimpleModel {
     }
 
     protected function validates_uniqueness_for($fields, $message) {
-        if (count($fields) > 0) {
-            foreach ($fields as $field) {
+        if(count($fields)>0) {
+            foreach($fields as $field) {
                 if (R::findOne($this->table, $field . '=?', array($this->$field)) != null)
                     $this->errors[$field][] = $message;
             }
@@ -1289,6 +1211,7 @@ class Model extends RedBean_SimpleModel {
 
     public function getErrors() {
         return $this->errors;
+
     }
 
     public function isValid() {
@@ -1304,11 +1227,11 @@ class Model extends RedBean_SimpleModel {
     }
 
     public function viewFieldErrors($field) {
-        if (!$this->isValidField($field)) {
+        if(!$this->isValidField($field)) {
             echo '<div class=\'model_error_div\'>';
-            echo '<ul class=\'model_error ' . $field . '\'>';
-            foreach ($this->errors[$field] as $error) {
-                echo '<li class=\'model_error_li\'>' . $error . '</li>';
+            echo '<ul class=\'model_error '.$field.'\'>';
+            foreach($this->errors[$field] as $error) {
+                echo '<li class=\'model_error_li\'>'.$error.'</li>';
             }
             echo '</ul>';
             echo '</div>';
@@ -1316,24 +1239,26 @@ class Model extends RedBean_SimpleModel {
     }
 
     public function viewModelErrors() {
-        if (!$this->isValid()) {
+        if(!$this->isValid()) {
             echo '<h3 class=\'model_errors_h3\'>Si sono verificati degli errori</h3>';
             echo '<div class=\'model_errors_div\'>';
             echo '<ul class=\'model_errors\'>';
-            foreach ($this->errors as $field => $messages) {
-                echo '<li class=\'model_errors_field_li\'>' . str_replace("_", " ", $field);
+            foreach($this->errors as $field => $messages) {
+                echo '<li class=\'model_errors_field_li\'>'.str_replace("_"," ",$field);
                 echo '<ul class=\'model_errors_messages_li\'>';
-                foreach ($messages as $error) {
-                    echo '<li class=\'model_errors_error_li\'>' . $error . '</li>';
+                foreach($messages as $error) {
+                    echo '<li class=\'model_errors_error_li\'>'.$error.'</li>';
                 }
                 echo '</ul></li>';
             }
             echo '</ul>';
             echo '</div>';
         }
-    }
 
+    }
 }
+
+
 
 /**
  * View
@@ -1399,14 +1324,14 @@ class View {
         if (self::$forceLayout) {
             if (self::$layout != '')
                 $ctrl = self::$layout;
-            if (!file_exists(ROOT . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . $ctrl . '.html.php'))
+            if (!file_exists(ROOT.DIRECTORY_SEPARATOR. 'view' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . $ctrl . '.html.php'))
                 throw new Exception('I cannot load the HTML layout ' . $ctrl . '#' . self::$routes['action']);
-            require(ROOT . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . $ctrl . '.html.php');
+            require(ROOT.DIRECTORY_SEPARATOR. 'view' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . $ctrl . '.html.php');
         }
         else {
-            if (!file_exists(ROOT . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $ctrl . DIRECTORY_SEPARATOR . self::$routes['action'] . '.php'))
+            if (!file_exists(ROOT.DIRECTORY_SEPARATOR. 'view' . DIRECTORY_SEPARATOR . $ctrl . DIRECTORY_SEPARATOR . self::$routes['action'] . '.php'))
                 throw new Exception('I cannot load the HTML view ' . $ctrl . '#' . self::$routes['action']);
-            require( ROOT . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $ctrl . DIRECTORY_SEPARATOR . self::$routes['action'] . '.php');
+            require( ROOT.DIRECTORY_SEPARATOR. 'view' . DIRECTORY_SEPARATOR . $ctrl . DIRECTORY_SEPARATOR . self::$routes['action'] . '.php');
         }
     }
 
@@ -1417,29 +1342,16 @@ class View {
      */
     private function partial($controller, $action) {
         try {
-            if (!file_exists(ROOT . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $controller . DIRECTORY_SEPARATOR . $action . '.php'))
+            if (!file_exists(ROOT.DIRECTORY_SEPARATOR. 'view' . DIRECTORY_SEPARATOR . $controller . DIRECTORY_SEPARATOR . $action . '.php'))
                 throw new Exception("I cannot load the partial of the action $action");
-            require(ROOT . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $controller . DIRECTORY_SEPARATOR . $action . '.php');
+            require(ROOT.DIRECTORY_SEPARATOR. 'view' . DIRECTORY_SEPARATOR . $controller . DIRECTORY_SEPARATOR . $action . '.php');
         } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
-    private function link_to($params = null, $get = null) {
+    private function link_to($params=null, $get=null) {
         return Sequencer::link_to($params, $get);
-    }
-
-    private function form($action=null, $method = null, $get=null, $attributes = null) {
-        if (!in_array($method, array('post', 'get')))
-            $method = 'post';
-        if (is_null($action))
-            $action = self::$routes['controller'].'/'.self::$routes['action'];        
-        $action = Sequencer::link_to($action, $get);
-        echo '<form accept-charset="UTF-8" method="' . $method . '" action="' . $action . '" ' . $attributes . ' />';
-    }
-
-    private function endForm() {
-        echo '</form>';
     }
 
     /**
@@ -1449,84 +1361,90 @@ class View {
      */
     private function renderTemplate($file) {
         try {
-            if (!file_exists(ROOT . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $file . '.php'))
+            if (!file_exists(ROOT.DIRECTORY_SEPARATOR. 'view' . DIRECTORY_SEPARATOR . $file . '.php'))
                 throw new Exception('I cannot load tha partial template file ' . $file);
-            require(ROOT . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $file . '.php');
+            require(ROOT.DIRECTORY_SEPARATOR. 'view' . DIRECTORY_SEPARATOR . $file . '.php');
         } catch (Exception $e) {
-            if (Config::DEVELOPMENT_ENV == true)
-                echo $e->getMessage();
-            else
-                Redirect::to404('Cannot find this partial page.');
+            echo $e->getMessage();
         }
     }
 
 }
 
-class Session {
+
+
+
+class Session{
 
     private $sess_save_path;
     static private $obj_instance;
 
-    private function __construct($path = null) {
-        if ($path != null)
-            $this->sess_save_path = ROOT . DIRECTORY_SEPARATOR . 'tmp';
-        else
-            $this->sess_save_path = '';
+
+    private function __construct($path = null){
+        if($path != null)
+            $this->sess_save_path = ROOT . DIRECTORY_SEPARATOR.'tmp';
     }
 
-    static function get_instance($path=null) {
-        if (!isset(self::$obj_instance)) {
+    static function get_instance($path){
+        if( !isset(self::$obj_instance) ){
             self::$obj_instance = new self($path);
-            session_set_save_handler(array(self::$obj_instance, "open"), array(self::$obj_instance, "close"), array(self::$obj_instance, "read"), array(self::$obj_instance, "write"), array(self::$obj_instance, "destroy"), array(self::$obj_instance, "gc"));
+            session_set_save_handler(array(self::$obj_instance,"open"), array(self::$obj_instance,"close"), array(self::$obj_instance,"read"), array(self::$obj_instance,"write"), array(self::$obj_instance,"destroy"), array(self::$obj_instance,"gc") );
             session_start();
         }
         return self::$obj_instance;
     }
 
-    function __set($name, $value) {
+    function __set( $name, $value ){
         $_SESSION[$name] = $value;
     }
 
-    function __get($name) {
-        return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+    function __get( $name ){
+        return isset( $_SESSION[$name] ) ? $_SESSION[$name] : null;
     }
 
-    function open($save_path, $session_name) {
-        if ($this->sess_save_path == '')
-            $this->sess_save_path = $save_path;#$save_path;
+    function open($save_path, $session_name){
+        if($this->sess_save_path == '')
+            $this->sess_save_path = $save_path; #$save_path;
         return true;
     }
 
-    function close() {
+    function close(){
         return true;
     }
 
-    function read($id) {
+    function read($id){
         $sess_file = $this->sess_save_path . "/sess_$id";
-        if (file_exists($sess_file))
+        if( file_exists($sess_file) )
             return file_get_contents($sess_file);
     }
 
-    function write($id, $sess_data) {
+    function write($id, $sess_data){
         $sess_file = $this->sess_save_path . "/sess_$id";
-        return file_put_contents($sess_file, $sess_data);
+        return file_put_contents( $sess_file, $sess_data );
     }
 
-    function destroy($id) {
+    function destroy($id){
         $sess_file = $this->sess_save_path . "/sess_$id";
-        if (file_exists($sess_file))
+        if(file_exists($sess_file))
             return unlink($sess_file);
     }
 
-    function gc($maxlifetime) {
+    function gc($maxlifetime){
         foreach (glob("$this->sess_save_path/sess_*") as $filename) {
-            if (file_exists($filename) && filemtime($filename) + $maxlifetime < time())
+            if ( file_exists($filename) && filemtime($filename) + $maxlifetime < time())
                 unlink($filename);
         }
         return true;
     }
 
+
 }
+
+
+
+
+
+
 
 if (function_exists('lcfirst') === false) {
 
@@ -1534,5 +1452,4 @@ if (function_exists('lcfirst') === false) {
         $str[0] = strtolower($str[0]);
         return $str;
     }
-
 }
