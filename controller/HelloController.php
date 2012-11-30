@@ -16,7 +16,6 @@ class HelloController extends ApplicationController {
     }
 
 	public function csrf() {
-            print_r($_SESSION);
 	}    
     public function welcome() {
     	#Redirect::to404('non puoi accedere');
@@ -26,10 +25,15 @@ class HelloController extends ApplicationController {
         
         $this->word = "Hello World!!!";
         $greetings = "ciao";
+        #$this->session['ciao'] = "hello";
+        #echo $this->session['ciao'];
+        #$this->session['ciao'] = 2;
+       # print_r($this->session);
+        /* 
         Flash::set('general', 'This is a flash message');
         Error::set('general', 'This is an error!!!');
         Error::set('general', 'This is another error!!!');
-        #print_r($this->session);
+        */
         Format::json(array('word' => $this->word));
         Format::xml(array('word' => $this->word));
         #Redirect::store(array('site', 'add_user'));

@@ -1,11 +1,12 @@
 html,body{
-    font: 16px Arial,Verdana, Geneva, Helvetica, sans-serif;
+    font: 15px Helvetica,Arial,sans-serif;
+    font-weight: 100;
     line-height: 22px;
-    background:#99CCCC url(images/bg.png) left top repeat-x;
+    background:#fff url(images/bg.png) left top repeat-x;
     position:relative;
     margin:0;
     padding:0;
-    color:#333;
+    color:#000;
 }
 
 a:link,
@@ -24,7 +25,7 @@ a:active{
     width: 940px;
     margin: auto;
     font-size: 1em;
-    background: #FF0033;
+    background: transparent;
     color: #FFF;
     min-height:60px;
     position: relative;
@@ -33,7 +34,7 @@ a:active{
     width:940px;
     min-height:210px;
     margin: auto;
-    background: #7B0A1B;
+    background: transparent;
     position:relative;
 }
 #pie-di-pagina{
@@ -63,8 +64,15 @@ div p {
     margin: 0;
     padding: 0.5em 1em;
 }
+div h1 {
+    font-size:28px;
+    font-weight: 400;
+    margin:0;
+    padding:0.5em;
+}
 div h2 {
-    font-size:20px;
+    font-size:22px;
+    font-weight: 100;
     margin:0;
     padding:0.5em 0.7em;
 }
@@ -110,16 +118,16 @@ div h2 {
 #logo {
     position:absolute;
     top:50%;
-    margin-top:-17px;
+    margin-top:-22px;
     left:1em;
-    width:160px;
+    width:199px;
 
 }
 #logo a{
     display:block;
     background:url('images/logo.png') 0 0 no-repeat;
-    width:134px;
-    height:25px;
+    width:199px;
+    height:45px;
 }
 #logo span{
     display:none;
@@ -156,8 +164,12 @@ code {
 	display:block;
 	overflow: auto;
 	font:13px Monaco, sans-serif;
-        
-        color:#000;
+    color:#000;
+	 border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	behavior: url("border-radius.htc");
 }
 
 #urls {

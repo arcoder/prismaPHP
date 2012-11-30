@@ -467,8 +467,7 @@ class Routes {
         return self::sanitize(mb_substr($path, 1));
     }
 
-    public static function build($default_controller, $default_action, $format) {
-        $session = Session::get_instance();
+    public static function build($default_controller, $default_action, $format) {        
         $url = Url::configure();
         if (!$url->isSanitized())
             Redirect::to400('Parameters are not valid');
@@ -537,7 +536,7 @@ class Routes {
         try {
             $sequencer = Sequencer::getInstance($external_path, $route, $format, $alias);
             $sequencer->phpSettings();
-            $sequencer->setController($session);
+            $sequencer->setController();
             $sequencer->setBeforefilter();
             $sequencer->setAction();
             $sequencer->setAfterfilter();
@@ -677,7 +676,7 @@ class Sequencer {
         $this->methodClass = self::separatorToCamel($this->action, '_' . false);
     }
 
-    public function setController($session) {
+    public function setController() {
         if ($this->controllerExists($this->classController)) {
             require ROOT . DIRECTORY_SEPARATOR . 'controller' . DIRECTORY_SEPARATOR . $this->classController . '.php';
             if (class_exists($this->classController) && method_exists($this->classController, $this->methodClass) && !in_array($this->methodClass, array('beforeFilter', 'afterFilter', 'configureVars'))) {
@@ -686,7 +685,7 @@ class Sequencer {
                 DB::configure();
                 Format::configure($this->controller, $this->action, $this->format);
                 $this->objController = new $this->classController();
-                $this->objController->__load_vars($this->controller, $this->action, $session);
+                $this->objController->__load_vars($this->controller, $this->action);
             } else {
                 throw new SequencerException('Controller class found, but i cannot use ' . $this->classController . '#' . $this->methodClass);
             }
@@ -880,21 +879,16 @@ abstract class Controller extends stdClass {
      * Contains (object)$_POST
      *
      */
-    public $post;
+    //public $post;
 
     /**
      * @var object
      * Contains (object)$_GET
      *
      */
-    public $get;
+    //public $get;
 
-    /**
-     * @var object
-     * Contains (object)$_SESSION
-     *
-     */
-    private $session;
+
 
     function __construct() {
         
@@ -908,12 +902,9 @@ abstract class Controller extends stdClass {
      * @param mixed $RCaction
      * @return void
      */
-    final public function __load_vars($RCcontroller, $RCaction, $sess) {
-        $this->post = (object) $_POST;
-        $this->get = (object) $_GET;
+    final public function __load_vars($RCcontroller, $RCaction) {
         self::$controller = $RCcontroller;
         self::$action = $RCaction;
-        $this->session = $sess;
         CSRF::guard();
     }
 
@@ -1010,12 +1001,6 @@ abstract class Controller extends stdClass {
     }
 
     function __destruct() {
-        $this->post = null;
-        $this->get = null;
-        $this->request = null;
-        unset($this->post);
-        unset($this->get);
-        unset($this->request);
     }
 
 }
@@ -1367,7 +1352,7 @@ class View {
         $this->cobjs = $controlObjs;
         self::$routes = $controlRoutes;
     }
-
+    
     public function __get($name) {
         /*
           if (array_key_exists($name, $this->objs)) {
@@ -1464,14 +1449,10 @@ class View {
 
 class Session {
 
-    private $sess_save_path;
+    private $savePath;
     static private $obj_instance;
 
-    private function __construct($path = null) {
-        if ($path != null)
-            $this->sess_save_path = ROOT . DIRECTORY_SEPARATOR . 'tmp';
-        else
-            $this->sess_save_path = '';
+    private function __construct() {
     }
 
     static function get_instance($path=null) {
@@ -1482,18 +1463,30 @@ class Session {
         }
         return self::$obj_instance;
     }
-
+    /*
     function __set($name, $value) {
+    	if(is_object($value))
+    		$value = serialize($value);
         $_SESSION[$name] = $value;
     }
 
     function __get($name) {
-        return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+    	if(isset($_SESSION[$name])) {
+	     	if(is_object(unserialize($_SESSION[$name])))
+	    		return unserialize($_SESSION[$name]);
+	    	else
+	    		return $_SESSION[$name];
+    	}
+    	return null;
     }
+    */
+  function open($savePath, $sessionName)
+    {
+        $this->savePath = $savePath;
+        if (!is_dir($this->savePath)) {
+            mkdir($this->savePath, 0777);
+        }
 
-    function open($save_path, $session_name) {
-        if ($this->sess_save_path == '')
-            $this->sess_save_path = $save_path;#$save_path;
         return true;
     }
 
@@ -1502,30 +1495,30 @@ class Session {
     }
 
     function read($id) {
-        $sess_file = $this->sess_save_path . "/sess_$id";
-        if (file_exists($sess_file))
-            return file_get_contents($sess_file);
+    	if(file_exists("$this->savePath/sess_$id"))
+        	return (string)file_get_contents("$this->savePath/sess_$id");
     }
 
-    function write($id, $sess_data) {
-        $sess_file = $this->sess_save_path . "/sess_$id";
-        return file_put_contents($sess_file, $sess_data);
+    function write($id, $data) {
+	    return file_put_contents("$this->savePath/sess_$id", $data) === false ? false : true;
     }
 
     function destroy($id) {
-        $sess_file = $this->sess_save_path . "/sess_$id";
-        if (file_exists($sess_file))
-            return unlink($sess_file);
-    }
-
-    function gc($maxlifetime) {
-        foreach (glob("$this->sess_save_path/sess_*") as $filename) {
-            if (file_exists($filename) && filemtime($filename) + $maxlifetime < time())
-                unlink($filename);
+    	$file = "$this->savePath/sess_$id";
+        if (file_exists($file)) {
+            unlink($file);
         }
         return true;
     }
 
+    function gc($maxlifetime) {
+	    foreach (glob("$this->savePath/sess_*") as $file) {
+            if (filemtime($file) + $maxlifetime < time() && file_exists($file)) {
+                unlink($file);
+            }
+        }
+        return true;
+    }
 }
 
 if (function_exists('lcfirst') === false) {

@@ -1,5 +1,4 @@
 <h1><?php echo $this->word; ?></h1>
-
 <h2>Edit this data(file: config/Config.php):</h2>
 <code>
 Config::INDEX_URL value: <b><?php echo Config::INDEX_URL; ?></b><br />

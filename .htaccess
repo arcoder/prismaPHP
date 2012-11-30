@@ -1,7 +1,14 @@
 <IfModule mod_rewrite.c>
-    RewriteEngine on
-    RewriteRule    ^$    public/    [L]
-    RewriteRule    (.*) public/$1    [L]
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond $1 !^(public|images|css|js)/
+# Exclude by filetype (optional)
+#RewriteCond $1 !\.(gif|jpe?g|png|bmp|ico|css|js)$
+RewriteRule ^(.*).html$ index.php/$1 [PT,L]
+RewriteRule ^(.*).json$ index.php/$1 [PT,L]
+RewriteRule ^(.*).xml$ index.php/$1  [PT,L]
+Options All -Indexes
  </IfModule>
 
 #Gzip

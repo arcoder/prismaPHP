@@ -1,12 +1,11 @@
 <?php 
 define("IN", true);
 define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', str_replace('/public', '', dirname(__FILE__)));
-
+define('ROOT', dirname(__FILE__));
 
 require ROOT . DS . 'config' . DS . 'Config.php';
 
-if (Config::DEVELOPMENT_ENV == true) {
+if (Config::DEVELOPMENT_ENV) {
 	error_reporting(E_ALL);
     ini_set('display_errors', 'On');
 } else {
@@ -15,6 +14,15 @@ if (Config::DEVELOPMENT_ENV == true) {
     ini_set('log_errors', 'On');
     ini_set('error_log', ROOT . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'error.log');
 }
+
+
+
+
+
+
+
+
+
 
 
 function autoload($class) {
@@ -36,6 +44,7 @@ require ROOT . DS . 'config' . DS . 'AppRoute.php';
 require ROOT . DS . 'controller' . DS . 'ApplicationController.php';
 #$time_start = microtime(true);
 try {
+Session::get_instance();
 AppRoute::build('hello', 'welcome', 'html');
 } catch(RoutesException $e) {
 	Redirect::to404($e->getMessage());

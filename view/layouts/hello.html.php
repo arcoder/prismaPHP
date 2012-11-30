@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8"/>
 
-        <title>Dashy! Framework page</title>
+        <title>prismaPHP Framework page</title>
         <link href="<?php echo Config::INDEX_URL; ?>/public/css/main.css" media="screen" rel="stylesheet" type="text/css" />
         <style>
 
@@ -11,7 +11,7 @@
     </head>
     <body>
         <div id="intestazione">
-            <div id="logo"><a href="<?php echo Config::INDEX_URL; ?>"><span>Dashy! Framework</span></a></div>
+            <div id="logo"><a href="<?php echo Config::INDEX_URL; ?>"><span>prismaPHP Framework</span></a></div>
             <div id="urls">
                 <ul>
                     <li><a href="<?php echo Config::DOCS; ?>/site/contacts">contacts</a></li>
@@ -20,8 +20,8 @@
             </div>
         </div>
         <div id="manifest">
-            <div id="what"><a href="<?php echo Config::DOCS; ?>"><h1>Dashy! Framewodsrk</h1></a></div>
-            <div id="download"><a href="<?php echo Config::DOCS; ?>"><h2>Dashy! Framewodsrk</h2></a></div>
+            <div id="what"><a href="<?php echo Config::DOCS; ?>"><h1>prismaPHP Framewodsrk</h1></a></div>
+            <div id="download"><a href="<?php echo Config::DOCS; ?>"><h2>prismaPHP Framewodsrk</h2></a></div>
             <div id="menu">
                 <ul class="menuNavigazione">
                     <li><a href="<?php echo Config::DOCS; ?>/docs/page/installation?id=1">install</a></li>
@@ -43,6 +43,6 @@
 
             </div>
         </div>
-        <div id="pie-di-pagina"><p>Dashy Framework <?php echo date('Y', time()); ?></p></div>
+        <div id="pie-di-pagina"><p>prismaPHP <?php echo date('Y', time()); ?></p></div>
     </body>
 </html>
