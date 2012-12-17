@@ -44,7 +44,6 @@ require ROOT . DS . 'config' . DS . 'AppRoute.php';
 require ROOT . DS . 'controller' . DS . 'ApplicationController.php';
 #$time_start = microtime(true);
 try {
-Session::get_instance();
 AppRoute::build('hello', 'welcome', 'html');
 } catch(RoutesException $e) {
 	Redirect::to404($e->getMessage());
@@ -58,5 +57,7 @@ try {
     RC::configure('hello', 'welcome', 'html');
 } catch (Exception $e) {
     die($e->getMessage());
+}
+*/e($e->getMessage());
 }
 */
