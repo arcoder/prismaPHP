@@ -1,13 +1,19 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-#RewriteCond $1 !^(public|images|css|js)/
-# Exclude by filetype (optional)
-#RewriteCond $1 !\.(gif|jpe?g|png|bmp|ico|css|js)$
-RewriteRule ^(.*).html$ index.php/$1 [PT,L]
-RewriteRule ^(.*).json$ index.php/$1 [PT,L]
-RewriteRule ^(.*).xml$ index.php/$1  [PT,L]
+#AcceptPathInfo On
+RewriteRule \.log$ - [R=404]
+RewriteRule \.php$ - [R=404]
+
+RewriteCond %{REQUEST_URI} !/img/
+RewriteCond %{REQUEST_URI} !/css/
+RewriteCond %{REQUEST_URI} !/js/
+RewriteCond %{REQUEST_URI} !/index\.php
+RewriteRule .* index.php/$0 [L,QSA]
+
+RewriteRule ^images/.+ public/$0 [L]
+RewriteRule ^js/.+ public/$0 [L]
+RewriteRule ^css/.+ public/$0 [L]
+
 Options All -Indexes
  </IfModule>
 
