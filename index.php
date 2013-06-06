@@ -37,9 +37,6 @@ require_once 'controller' . DS . 'ApplicationController.php';
 
 ############### VENDOR LIBS ################
 
-## Facebook
-require_once ROOT . DS . 'vendor' . DS . 'fb' . DS . 'facebook.php';
-
 ## Swiftmailer
 require_once ROOT . DS . 'vendor'. DS .'swiftmailer5.0.0'. DS .'swift_required.php';
 

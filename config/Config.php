@@ -19,7 +19,7 @@ class Config {
      * @access public
      * @static
      */
-    const INDEX_URL = "http://localhost:8888/framework";
+    const INDEX_URL = "http://localhost:8888/prismaPHP";
     
 
     const DOCS = "http://phprisma.org/docs.html";
