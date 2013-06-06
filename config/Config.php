@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * @engineer Alberto Ruffo
+ * 
+ */
+
+date_default_timezone_set('Europe/Rome');
+setlocale(LC_ALL, 'it_IT');
+
 class Config {
 
     /**
@@ -19,47 +27,47 @@ class Config {
     /**
      * APP
      * 
-     * (default value: "FEDOM.it")
+     * (default value: "prismaPHP")
      * 
      * @var string
      * @access public
      * @static
      */
-    const APP = "Frameworkv0.7";
+    const APP = "prismaPHP";
     
     /**
      * SMTPhost
      * 
-     * (default value: "smtp.fedom.it")
+     * (default value: "smtp.site.it")
      * 
      * @var string
      * @access public
      * @static
      */
-    const SMTP_HOST = "smtp.host.it";
+    const SMTP_HOST = "mail.site.it";
    
      
     /**
      * SMTPusername
      * 
-     * (default value: "info@fedom.it")
+     * (default value: "email@site.it")
      * 
      * @var string
      * @access public
      * @static
      */
-    const SMTP_USERNAME = "smtpuser";
+    const SMTP_USERNAME = "email@site.it";
     
     /**
      * SMTPpassword
      * 
-     * (default value: "ciao7777")
+     * (default value: "password")
      * 
      * @var string
      * @access public
      * @static
      */
-    const SMTP_PASSWORD = "smtppassword";
+    const SMTP_PASSWORD = "password";
     
     /**
      * SMTPport
@@ -162,4 +170,3 @@ class Config {
 	 const DEVELOPMENT_ENV = true;
 
 }
-

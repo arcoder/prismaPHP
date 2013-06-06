@@ -2,17 +2,17 @@ html,body{
     font: 15px Helvetica,Arial,sans-serif;
     font-weight: 100;
     line-height: 22px;
-    background:#fff url(images/bg.png) left top repeat-x;
+    background:#d0d0d0 url(images/bg.png) left top repeat-x;
     position:relative;
     margin:0;
     padding:0;
-    color:#000;
+    color:#202020;
 }
 
 a:link,
 a:visited{
     background:transparent;
-    color:#7B0A1B;
+    color:#764E79;
     text-decoration:none;
 }
 a:hover,
@@ -30,6 +30,7 @@ a:active{
     min-height:60px;
     position: relative;
 }
+
 #manifest {
     width:940px;
     min-height:210px;
@@ -74,6 +75,12 @@ div h2 {
     font-size:22px;
     font-weight: 100;
     margin:0;
+    padding:0.5em 0.7em;
+}
+div h4 {
+	font-size:18px;
+	font-weight: bold;
+	margin:0;
     padding:0.5em 0.7em;
 }
 #download
@@ -203,7 +210,7 @@ code {
 #urls a:hover,
 #urls a:focus,
 #urls a:active{
-    color: #333;
+    color: #000;
     text-decoration: underline;
 }
 
@@ -238,7 +245,7 @@ code {
 
 }
 
-input[type=email] {
+input[type=email], input[type=text], input[type=password] {
     padding:0.5em;
     line-height: 20px;
     font-size:16px;
@@ -250,4 +257,12 @@ textarea {
     line-height: 20px;
     width:90%;
     margin:0 auto;
+}
+
+.alert-success {
+	background: #ccffcc;
+	border:1px solid #009900;
+}
+.close {
+	display: none;
 }

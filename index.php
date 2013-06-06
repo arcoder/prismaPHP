@@ -1,63 +1,97 @@
-<?php 
-define("IN", true);
+<?php
+#register_shutdown_function('session_write_close');
+#session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
+
+
+
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
 
-require ROOT . DS . 'config' . DS . 'Config.php';
-
-if (Config::DEVELOPMENT_ENV) {
-	error_reporting(E_ALL);
-    ini_set('display_errors', 'On');
-} else {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 'Off');
-    ini_set('log_errors', 'On');
-    ini_set('error_log', ROOT . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'error.log');
+function autoload($classname) {
+    if (is_readable(ROOT . DS . 'format' . DS . $classname . '.php'))
+        require_once( "format" . DS . "$classname.php" );
+    if (is_readable(ROOT . DS . 'model' . DS . $classname . '.php'))
+        require_once( "model" . DS . "$classname.php" );
+    if (is_readable(ROOT . DS . 'lib' . DS . $classname . '.php'))
+        require_once( 'lib' . DS . "$classname.php" );
 }
-
-
-
-
-
-
-
-
-
-
-
-function autoload($class) {
-    if (is_readable(ROOT . DS .'model' . DS . $class . '.php'))
-        require ROOT . DS . 'model' . DS . $class . '.php';
-    if (is_readable(ROOT . DS .'lib' . DS . $class . '.php'))
-        require ROOT . DS .'lib' . DS . $class . '.php';
-}
-
-
 
 spl_autoload_register('autoload');
 
-require ROOT . DS . 'helper' . DS . 'Helpers.php';
-require ROOT . DS . 'dfw' . DS . 'Swift-4.1.1'. DS . 'lib' . DS .'swift_required.php';
-require ROOT . DS . 'dfw' . DS . 'rb.php';
-require ROOT . DS . 'dfw' . DS . 'rc3.php';
-require ROOT . DS . 'config' . DS . 'AppRoute.php';
-require ROOT . DS . 'controller' . DS . 'ApplicationController.php';
-#$time_start = microtime(true);
-try {
-AppRoute::build('hello', 'welcome', 'html');
-} catch(RoutesException $e) {
-	Redirect::to404($e->getMessage());
-} 
+require_once 'config/Config.php';
+require_once ROOT . DS . 'pf' . DS . 'rb.php';
+require_once ROOT . DS . 'pf' . DS . 'rc.php';
+require_once 'config/AppRoute.php';
+DB::configure();
 
-#$time_end = microtime(true);
-#$time = $time_end - $time_start;
-#echo '<br>'.$time.' seconds'; exit;
+
+
+############### Helper ###############
+require_once ROOT . DS . 'helper' . DS . 'H.php';
+############### ApplicationController ###############
+require_once 'controller' . DS . 'ApplicationController.php';
+
+
+
+############### VENDOR LIBS ################
+
+## Facebook
+require_once ROOT . DS . 'vendor' . DS . 'fb' . DS . 'facebook.php';
+
+## Swiftmailer
+require_once ROOT . DS . 'vendor'. DS .'swiftmailer5.0.0'. DS .'swift_required.php';
+
+function swiftmailer_configurator() {
+    // configure Swift Mailer
+    Swift_Preferences::getInstance()->setCharset('utf-8');
+}
+
+Swift::init('swiftmailer_configurator');
+Mail::setTransport();
+
+
+
+
+
 /*
-try {
-    RC::configure('hello', 'welcome', 'html');
-} catch (Exception $e) {
-    die($e->getMessage());
-}
-*/e($e->getMessage());
-}
+$handler = new SessionDbManager();
+session_set_save_handler(
+        array($handler, '_open'), array($handler, '_close'), array($handler, '_read'), array($handler, '_write'), array($handler, '_destroy'), array($handler, '_clean')
+);
+
+// the following prevents unexpected effects when using objects as save handlers
+register_shutdown_function('session_write_close');
+session_start();
 */
+
+session_start();
+
+try {
+    $app = AppRoute::getInstance(URI::getInstance());
+    $intpath = $app->resolveUri();
+} catch (RouterException $e) {
+    die($e->__toString());
+} catch (InternalPathException $e) {
+    die($e->__toString());
+} catch (GeneratorException $e) {
+    die($e->__toString());
+}
+
+
+$gen = Generator::create($intpath);
+
+try {
+    $gen->execute();
+} catch (ReflectionException $e) {
+    $e->__toString();
+} catch (GeneratorException $e) {
+    $e->__toString();
+} catch (ControllerException $e) {
+    $e->__toString();
+} catch (FormatHandlerException $e) {
+    $e->__toString_No404();
+    ;
+} 
+DB::close(); 

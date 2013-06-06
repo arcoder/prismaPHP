@@ -9,13 +9,13 @@ new TWTR.Widget({
   height: 300,
   theme: {
     shell: {
-      background: '#99cccc',
-      color: '#000333'
+      background: '#202020',
+      color: '#f0f0f0'
     },
     tweets: {
-      background: '#99cccc',
-      color: '#000333',
-      links: '#333333'
+      background: '#f0f0f0',
+      color: '#202020',
+      links: '#542C57'
     }
   },
   features: {
