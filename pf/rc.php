@@ -5,9 +5,11 @@
  * 
  */
 
-class OException extends Exception {
+class OException extends Exception
+{
 
-    public function __toString() {
+    public function __toString()
+    {
         if (Config::DEVELOPMENT_ENV == true)
             echo '<pre>' . parent::__toString() . '</pre>';
         else {
@@ -15,39 +17,43 @@ class OException extends Exception {
 
             error_log(str_repeat("-", 50) . "\n" . $where->getPath() . "\n GET: " . print_r($_GET, true) . "\n" . parent::__toString() . "\n", 3, ROOT . DS . 'logs' . DS . 'exceptions.log');
             Redirect::to404("Si è verificato un problema interno (01).");
-            
         }
+        return "";
     }
-    
-    public function __toString_No404() {
-         if (Config::DEVELOPMENT_ENV == true)
+
+    public function __toString_No404()
+    {
+        if (Config::DEVELOPMENT_ENV == true)
             echo '<pre>' . parent::__toString() . '</pre>';
         else {
             $where = URI::getInstance();
             echo 'Si è verificato un problema interno (02).';
             error_log(str_repeat("-", 50) . "\n" . $where->getPath() . "\n GET: " . print_r($_GET, true) . "\n" . parent::__toString() . "\n", 3, ROOT . DS . 'logs' . DS . 'exceptions.log');
             exit;
-        }       
+        }
     }
 
 }
 
-class DB {
+class DB
+{
 
-    public static function close() {
+    public static function close()
+    {
         R::close();
     }
 
-    public static function configure() {
+    public static function configure()
+    {
         switch (Config::DB_ADAPTER) {
             case 'mysql':
-                return R::setup("mysql:host=" . Config::DB_HOST . ";dbname=" . Config::DB_DATABASE, Config::DB_USER, Config::DB_PASSWORD);
+                R::setup("mysql:host=" . Config::DB_HOST . ";dbname=" . Config::DB_DATABASE, Config::DB_USER, Config::DB_PASSWORD);
                 break;
             case 'postgresql':
-                return R::setup('pgsql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_DATABASE, Config::DB_USER, Config::DB_PASSWORD); //postgresql
+                R::setup('pgsql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_DATABASE, Config::DB_USER, Config::DB_PASSWORD); //postgresql
                 break;
             case 'sqlite':
-                return R::setup('sqlite:' . Config::DB_HOST, Config::DB_DATABASE, Config::DB_PASSWORD); //sqlite
+                R::setup('sqlite:' . Config::DB_HOST, Config::DB_DATABASE, Config::DB_PASSWORD); //sqlite
                 break;
         }
         if (Config::DEVELOPMENT_ENV == false)
@@ -58,7 +64,8 @@ class DB {
 
 }
 
-class Redirect {
+class Redirect
+{
 
     /**
      * Redirects to another page
@@ -67,25 +74,29 @@ class Redirect {
      *
      * @return void
      */
-    public static function to($params = null, $get = null) {
+    public static function to($params = null, $get = null)
+    {
         Header('Location:' . Utility::link_to($params, $get));
         exit;
     }
 
-    public static function to404($message = '') {
+    public static function to404($message = '')
+    {
         header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
         require './404.php';
         exit;
     }
 
-    public static function to400($message = '') {
+    public static function to400($message = '')
+    {
         header($_SERVER["SERVER_PROTOCOL"] . ' 400 Bad Request', true, 400);
         require './400.php';
     }
 
 }
 
-class Error {
+class Error
+{
 
     private static $messages = array();
 
@@ -96,7 +107,8 @@ class Error {
      *
      * @return void
      */
-    public static function set($owner, $msg) {
+    public static function set($owner, $msg)
+    {
         self::$messages[$owner][] = $msg;
         $_SESSION['rc_error'][$owner][] = $msg;
     }
@@ -106,9 +118,10 @@ class Error {
      *
      * @param string $msg
      *
-     * @return void
+     * @return bool
      */
-    public static function isEmpty() {
+    public static function isEmpty()
+    {
         if (isset($_SESSION['rc_error']) && count($_SESSION['rc_error']) > 0)
             return false;
         return true;
@@ -119,7 +132,8 @@ class Error {
      *
      * @return void
      */
-    public static function get($owner, $style = true) {
+    public static function get($owner, $style = true)
+    {
         if (isset($_SESSION['rc_error'][$owner]) && count($_SESSION['rc_error'][$owner]) > 0) {
             if ($style == true) {
                 echo '<div class=\'alert alert-error alert-block\'>';
@@ -127,9 +141,9 @@ class Error {
                 echo '<h4>Errore!</h4>';
                 echo '<ul class=\'rc_error\'>';
                 foreach ($_SESSION['rc_error'][$owner] as $msg) {
-                      if(is_array($msg)) {
-                        foreach($msg as $one) {
-                           echo '<li>' . $one . '</li>'; 
+                    if (is_array($msg)) {
+                        foreach ($msg as $one) {
+                            echo '<li>' . $one . '</li>';
                         }
                     } else {
                         echo '<li>' . $msg . '</li>';
@@ -137,8 +151,7 @@ class Error {
                 }
                 echo '</ul>';
                 echo '</div>';
-            }
-            else
+            } else
                 print_r($_SESSION['rc_error'][$owner]);
             $_SESSION['rc_error'][$owner] = null;
         }
@@ -146,7 +159,8 @@ class Error {
 
 }
 
-class Success {
+class Success
+{
 
     private static $messages = array();
 
@@ -157,7 +171,8 @@ class Success {
      *
      * @return void
      */
-    public static function set($owner, $msg) {
+    public static function set($owner, $msg)
+    {
         self::$messages[$owner][] = $msg;
         $_SESSION['rc_success'][$owner][] = $msg;
     }
@@ -167,9 +182,10 @@ class Success {
      *
      * @param string $msg
      *
-     * @return void
+     * @return bool
      */
-    public static function isEmpty() {
+    public static function isEmpty()
+    {
         if (isset($_SESSION['rc_success']) && count($_SESSION['rc_success']) > 0)
             return false;
         return true;
@@ -180,7 +196,8 @@ class Success {
      *
      * @return void
      */
-    public static function get($owner, $style = true) {  
+    public static function get($owner, $style = true)
+    {
         if (isset($_SESSION['rc_success'][$owner]) && count($_SESSION['rc_success'][$owner]) > 0) {
             if ($style == true) {
                 echo '<div class=\'alert alert-success alert-block\'>';
@@ -188,9 +205,9 @@ class Success {
                 echo '<h4>Ben fatto!</h4>';
                 echo '<ul class=\'rc_success\'>';
                 foreach ($_SESSION['rc_success'][$owner] as $msg) {
-                      if(is_array($msg)) {
-                        foreach($msg as $one) {
-                           echo '<li>' . $one . '</li>'; 
+                    if (is_array($msg)) {
+                        foreach ($msg as $one) {
+                            echo '<li>' . $one . '</li>';
                         }
                     } else {
                         echo '<li>' . $msg . '</li>';
@@ -198,8 +215,7 @@ class Success {
                 }
                 echo '</ul>';
                 echo '</div>';
-            }
-            else
+            } else
                 print_r($_SESSION['rc_success']);
             $_SESSION['rc_success'] = null;
         }
@@ -208,8 +224,8 @@ class Success {
 }
 
 
-
-class Warning {
+class Warning
+{
 
     private static $messages = array();
 
@@ -220,7 +236,8 @@ class Warning {
      *
      * @return void
      */
-    public static function set($owner, $msg) {
+    public static function set($owner, $msg)
+    {
         self::$messages[$owner][] = $msg;
         $_SESSION['rc_warning'][$owner][] = $msg;
     }
@@ -230,9 +247,10 @@ class Warning {
      *
      * @param string $msg
      *
-     * @return void
+     * @return bool
      */
-    public static function isEmpty() {
+    public static function isEmpty()
+    {
         if (isset($_SESSION['rc_warning']) && count($_SESSION['rc_warning']) > 0)
             return false;
         return true;
@@ -243,7 +261,8 @@ class Warning {
      *
      * @return void
      */
-    public static function get($owner, $style = true) {  
+    public static function get($owner, $style = true)
+    {
         if (isset($_SESSION['rc_warning'][$owner]) && count($_SESSION['rc_warning'][$owner]) > 0) {
             if ($style == true) {
                 echo '<div class=\'alert alert-block\'>';
@@ -251,9 +270,9 @@ class Warning {
                 echo '<h4>Attenzione!</h4>';
                 echo '<ul class=\'rc_warning\'>';
                 foreach ($_SESSION['rc_warning'][$owner] as $msg) {
-                    if(is_array($msg)) {
-                        foreach($msg as $one) {
-                           echo '<li>' . $one . '</li>'; 
+                    if (is_array($msg)) {
+                        foreach ($msg as $one) {
+                            echo '<li>' . $one . '</li>';
                         }
                     } else {
                         echo '<li>' . $msg . '</li>';
@@ -261,8 +280,7 @@ class Warning {
                 }
                 echo '</ul>';
                 echo '</div>';
-            }
-            else
+            } else
                 print_r($_SESSION['rc_warning']);
             $_SESSION['rc_warning'] = null;
         }
@@ -270,44 +288,56 @@ class Warning {
 
 }
 
-class FormatHandlerException extends OException {
-    
+class FormatHandlerException extends OException
+{
+
 }
 
-abstract class FormatHandler {
+abstract class FormatHandler
+{
 
-    public static function getInstance($type, Controller $controllerObj, InternalPath $path) {
-            if ($type == 'html') {
-                return new HTML($controllerObj, $path);
-            } elseif ($type == 'json')
-                return new JSON($controllerObj, $path);
-            else {
-                throw new FormatHandlerException('Format not avaiable, cannout create view');
-                return null;
+    public static function getInstance($type, Controller $controllerObj, InternalPath $path)
+    {
+        $class_name = mb_strtoupper($type);
+        if (class_exists($class_name)) {
+            $format = new ReflectionClass($class_name);
+            if ($format->hasMethod('view') and $format->isSubclassOf(__CLASS__)) {
+                return new $class_name($controllerObj, $path);
+            } else {
+                throw new FormatHandlerException('Class ' . $class_name . ' not found or method view not overridden');
             }
+        } else {
+            throw new FormatHandlerException('Format not available, cannot create view');
+        }
+        #return null; trigger_error???
     }
 
     abstract function view();
 }
 
-class ControllerException extends OException {
-    
+class ControllerException extends OException
+{
+
 }
 
-abstract class Controller extends stdClass {
+abstract class Controller extends stdClass
+{
 
     protected static $path;
 
-    public function __construct(InternalPath $path) {
+    public function __construct(InternalPath $path)
+    {
         self::$path = $path;
     }
 
-    public function before_filter() {
-        
+    public function before_filter()
+    {
+
     }
 
-    public function after_filter() {
-        
+    public function after_filter()
+    {
+
     }
 
     /**
@@ -317,12 +347,13 @@ abstract class Controller extends stdClass {
      * EX.: $this->filter('checkUserLogin',array('only' => array('login','search'));
      *
      * @param string $method
-     * @param array  $actions
-     * @param array  $args (protected method args)
+     * @param array $actions
+     * @param array $args (protected method args)
      *
      * @return void
      */
-    final protected function filter($method, $actions = array(), $args = array()) {
+    final protected function filter($method, $actions = array(), $args = array())
+    {
         $ref = new ReflectionObject($this);
 
         if (!$ref->getMethod($method)->isProtected())
@@ -367,42 +398,47 @@ abstract class Controller extends stdClass {
                         break;
                 }
             }
-        }
-        else {
+        } else {
             throw new ControllerException("Filter method accepts an array with a key(all, except, only), ex: array('all' => 'method1', 'method2')");
         }
     }
 
 }
 
-class GeneratorException extends OException {
-    
+class GeneratorException extends OException
+{
+
 }
 
-class Generator {
+class Generator
+{
 
     private $internalPath;
     private static $instance;
 
-    private function __construct(InternalPath $p) {
+    private function __construct(InternalPath $p)
+    {
         $this->internalPath = $p;
     }
 
-    public static function create(InternalPath $p) {
+    public static function create(InternalPath $p)
+    {
         if (!is_null($p) and empty(self::$instance)) {
             self::$instance = new Generator($p);
             return self::$instance;
         }
         throw new GeneratorException('There\'s a problem, i cannot generate anything');
-        return null;
+        #return null; trigger_error???
     }
 
-    public function execute() {
+    public function execute()
+    {
         $this->phpSettings();
         $this->setController();
     }
 
-    private function setController() {
+    private function setController()
+    {
         $controller = $this->internalPath->getController(true);
         $action = $this->internalPath->getAction(true);
         if ($this->controllerExists($controller)) {
@@ -414,7 +450,7 @@ class Generator {
 
             $controllerR = new ReflectionClass($controller);
             if ($controllerR->hasMethod($action)) {
-                if($controllerR->isSubclassOf('ApplicationController')) {
+                if ($controllerR->isSubclassOf('ApplicationController')) {
                     if ($controllerR->getMethod($action)->isPublic() and !in_array($action, array('beforeFilter', 'afterFilter'))) {
                         try {
                             $controllerObj = new $controller($this->internalPath);
@@ -430,14 +466,13 @@ class Generator {
                         }
                     } else {
                         throw new GeneratorException('Cannot load a private/protected such as action \'' . $action . '\'');
-                    }   
+                    }
                 } else {
-                    throw new GeneratorException($controller.' must extend ApplicationController');
+                    throw new GeneratorException($controller . ' must extend ApplicationController');
                 }
             } else {
                 throw new GeneratorException('Action \'' . $action . '\' not found or controller doesn\'t extend ApplicationController');
             }
-
 
 
             #$controller = new $this->classController();
@@ -448,17 +483,19 @@ class Generator {
         }
     }
 
-    private function controllerExists($classController) {
+    private function controllerExists($classController)
+    {
 
         if (file_exists(ROOT . DS . 'controller' . DS . $classController . '.php'))
             return true;
         else {
             throw new GeneratorException('I cannot load controller \'' . $classController . '.php\', file doesn\'t exist.');
-            return false;
+            #return false; trigger_error??
         }
     }
 
-    private function phpSettings() {
+    private function phpSettings()
+    {
         if (get_magic_quotes_gpc()) {
             $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
             while (list($key, $val) = each($process)) {
@@ -466,7 +503,7 @@ class Generator {
                     unset($process[$key][$k]);
                     if (is_array($v)) {
                         $process[$key][stripslashes($k)] = $v;
-                        $process[] = &$process[$key][stripslashes($k)];
+                        $process[] = & $process[$key][stripslashes($k)];
                     } else {
                         $process[$key][stripslashes($k)] = stripslashes($v);
                     }
@@ -488,59 +525,67 @@ class Generator {
 
 }
 
-class InternalPathException extends OException {
-    
+class InternalPathException extends OException
+{
+
 }
 
-class InternalPath {
+class InternalPath
+{
 
     private $controller;
     private $action;
     private $args = array();
     private $format;
 
-    public function __construct($defcontroller, $defaction, $defargs, $defformat) {
+    public function __construct($defcontroller, $defaction, $defargs, $defformat)
+    {
         $this->controller = Utility::separatorToUnderscore($defcontroller);
         $this->action = Utility::separatorToUnderscore($defaction);
         $this->args = $defargs;
         $this->format = $defformat;
     }
 
-    public function import(array $values) {
+    public function import(array $values)
+    {
         if (in_array(array('controller', 'action', 'args', 'format'), array_keys($values))) {
 
             $this->controller = Utility::separatorToUnderscore($values['controller']);
             $this->action = Utility::separatorToUnderscore($values['action']);
             $this->args = $values['args'];
             $this->format = $values['format'];
-        }
-        else
+        } else
             throw new InternalPathException('i cannot load data into internal path.');
     }
 
-    public function getController($camelled = false) {
+    public function getController($camelled = false)
+    {
         if ($camelled == false)
             return $this->controller;
         else
             return Utility::separatorToCamel($this->controller, '_', true) . 'Controller';
     }
 
-    public function getAction($camelled = false) {
+    public function getAction($camelled = false)
+    {
         if ($camelled == false)
             return $this->action;
         else
             return Utility::separatorToCamel($this->action, '_', false);
     }
 
-    public function getArgs() {
+    public function getArgs()
+    {
         return $this->args;
     }
 
-    public function getFormat() {
+    public function getFormat()
+    {
         return $this->format;
     }
 
-    public function export() {
+    public function export()
+    {
         return array(
             'controller' => $this->getController(),
             'action' => $this->getAction(),
@@ -549,29 +594,34 @@ class InternalPath {
         );
     }
 
-    public function get() {
+    public function get()
+    {
         return $this->getController() . '/' . $this->getAction() . '/' . implode('/', $this->getArgs()) . '/' . $this->getFormat();
     }
 
 }
 
-class Utility {
+class Utility
+{
 
-    public static function separatorToUnderscore($str, $from = '-') {
+    public static function separatorToUnderscore($str, $from = '-')
+    {
         return str_replace($from, '_', $str);
     }
 
-    public static function separatorToCamel($str, $separator = '-', $ucfirst = false) {
+    public static function separatorToCamel($str, $separator = '-', $ucfirst = false)
+    {
         $parts = explode($separator, $str);
         $parts = $parts ? array_map('ucfirst', $parts) : array($str);
         $parts[0] = $ucfirst ? ucfirst($parts[0]) : lcfirst($parts[0]);
         return implode('', $parts);
     }
 
-    public static function link_to($params = null, $get = null) {
+    public static function link_to($params = null, $get = null)
+    {
         $url = Config::INDEX_URL . '/';
-        if (Config::LANG_MULTI_LANGUAGE == true)
-            $url .= Lang::get() . '/';
+        #if (Config::LANG_MULTI_LANGUAGE == true)
+        #    $url .= Lang::get() . '/';
 
         if (is_string($params)) {
             if (filter_var($params, FILTER_VALIDATE_URL) !== false) {
@@ -597,9 +647,10 @@ class Utility {
         return $url;
     }
 
-    public static function toAscii($str, $replace = array(), $delimiter = '-', $maxLength = 200) {
+    public static function toAscii($str, $replace = array(), $delimiter = '-', $maxLength = 200)
+    {
         if (!empty($replace)) {
-            $str = str_replace((array) $replace, ' ', $str);
+            $str = str_replace((array)$replace, ' ', $str);
         }
 
         $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
@@ -612,7 +663,8 @@ class Utility {
 
 }
 
-class URI {
+class URI
+{
 
     private $path;
     public static $constArray = array(
@@ -622,32 +674,36 @@ class URI {
         ':alnum' => '[a-z0-9]+'
     );
 
-    private function __construct($url = null) {
+    private function __construct($url = null)
+    {
         if (is_null($url)) {
             if (isset($_SERVER['ORIG_PATH_INFO']))
                 $this->path = substr($_SERVER['ORIG_PATH_INFO'], 1);
             elseif (isset($_SERVER['PATH_INFO']))
-                $this->path = substr($_SERVER['PATH_INFO'], 1);
-            else
+                $this->path = substr($_SERVER['PATH_INFO'], 1); else
                 $this->path = '';
         } else {
             $this->path = $url;
         }
     }
 
-    public static function getInstance($url = null) {
+    public static function getInstance($url = null)
+    {
         return new self($url);
     }
 
-    public function getPath() {
+    public function getPath()
+    {
         return $this->path;
     }
 
-    public function getPathLessFormat() {
+    public function getPathLessFormat()
+    {
         return preg_replace("/\\.[^.\\s]{3,4}$/", "", $this->path);
     }
 
-    public function getParts() {
+    public function getParts()
+    {
 // delete first backslash / for exploding and remove extension
         $i = substr_count($this->getPathLessFormat(), '/');
         if ($i > 0)
@@ -658,41 +714,45 @@ class URI {
                 return $arr;
             else
                 return array();
-        }
-        else
+        } else
             return array();
     }
 
-    public function getExt() {
+    public function getExt()
+    {
         $path = parse_url($this->path, PHP_URL_PATH);
         return pathinfo($path, PATHINFO_EXTENSION);
     }
 
-    public function hasExt() {
+    public function hasExt()
+    {
         if ($this->getExt() == '') {
             return false;
         }
         return true;
     }
 
-    public function compareWith(URI $op) {
+    public function compareWith(URI $op)
+    {
         $regExpPath1 = str_replace(array_keys(static::$constArray), static::$constArray, str_replace('/', '\/', $this->path));
         #echo '<b>' . $regExpPath1 . '</b> paragonato con <b>' . $op->getPathLessFormat() . '</b> ';
         if (preg_match('/^' . $regExpPath1 . '$/', Utility::separatorToUnderscore($op->getPathLessFormat()), $e)) {
             return true;
         }
-        
+
         #echo $regExpPath1.' '.Utility::separatorToUnderscore($op->getPathLessFormat()).'NO!!!<br>';
         return false;
     }
 
 }
 
-class RouterException extends OException {
-    
+class RouterException extends OException
+{
+
 }
 
-class Router {
+class Router
+{
 
     private $uri;
     protected static $routes = array();
@@ -705,18 +765,21 @@ class Router {
     );
     private $destination = array();
 
-    private function __construct(URI $uriobj) {
+    private function __construct(URI $uriobj)
+    {
         $this->uri = $uriobj;
         if (preg_match('/[^[:lower:]0-9-\/]+/', $this->uri->getPathLessFormat(), $e) or ($this->uri->hasExt() == false and count($this->uri->getParts()) > 0)) {
             throw new RouterException('Url format is not valid', 0);
         }
     }
 
-    public function getRoute() {
+    public function getRoute()
+    {
         return $this->destination;
     }
 
-    public function resolveURI() {
+    public function resolveURI()
+    {
         $parts = $this->uri->getParts();
         foreach (static::$aliases as $id_row => $row) {
             # $col0 is the first column of $aliases array
@@ -740,7 +803,7 @@ class Router {
                     $a++;
                 }
                 return new InternalPath(
-                        $this->destination['controller'], $this->destination['action'], $this->destination['args'], $this->destination['format']
+                    $this->destination['controller'], $this->destination['action'], $this->destination['args'], $this->destination['format']
                 );
             }
         }
@@ -754,7 +817,7 @@ class Router {
                 'format' => static::$default_route['format']
             );
             return new InternalPath(
-                    $this->destination['controller'], $this->destination['action'], $this->destination['args'], $this->destination['format']
+                $this->destination['controller'], $this->destination['action'], $this->destination['args'], $this->destination['format']
             );
         } else {
             $action = 'index';
@@ -769,30 +832,34 @@ class Router {
                     'format' => $this->uri->getExt()
                 );
                 return new InternalPath(
-                        $this->destination['controller'], $this->destination['action'], $this->destination['args'], $this->destination['format']
+                    $this->destination['controller'], $this->destination['action'], $this->destination['args'], $this->destination['format']
                 );
             }
         }
         throw new RouterException('i cannot find a route', 1);
-        return null;
+        #return null; trigger_error???
     }
 
-    public static function getInstance(URI $uriobj) {
+    public static function getInstance(URI $uriobj)
+    {
         return new static($uriobj);
     }
 
 }
 
-class ModelException extends Exception {
-    
+class ModelException extends Exception
+{
+
 }
 
-abstract class Model extends RedBean_SimpleModel {
+abstract class Model extends RedBean_SimpleModel
+{
 
     protected $errors = array();
     private $table;
 
-    function __construct($tbl) {
+    function __construct($tbl)
+    {
         $this->table = $tbl;
     }
 
@@ -802,23 +869,27 @@ abstract class Model extends RedBean_SimpleModel {
 
     abstract public function validationOnDelete();
 
-    protected function validate() {
+    protected function validate()
+    {
         $this->throwModelException();
     }
 
-    private function throwModelException() {
+    private function throwModelException()
+    {
         if (count($this->errors) > 0) {
             throw new ModelException('Model throws exception, you must validate data before.');
         }
     }
 
-    public function validates_presence_of($word, $label, $message) {
+    public function validates_presence_of($word, $label, $message)
+    {
         if (trim($this->$word) == '') {
             $this->errors[$word][] = array($label, $message);
         }
     }
 
-    public function validates_presence_for(array $words, array $labels, $message) {
+    public function validates_presence_for(array $words, array $labels, $message)
+    {
         if (count($words) > 0) {
             $a = 0;
             foreach ($words as $field) {
@@ -830,13 +901,15 @@ abstract class Model extends RedBean_SimpleModel {
         }
     }
 
-    public function validates_ctype($word, $label, $ctype, $message) {
+    public function validates_ctype($word, $label, $ctype, $message)
+    {
         if (!call_user_func_array('ctype_' . $ctype, array($this->$word))) {
             $this->errors[$word][] = array($label, $message);
         }
     }
 
-    public function validates_ctype_for(array $words, array $labels, $ctype, $message) {
+    public function validates_ctype_for(array $words, array $labels, $ctype, $message)
+    {
         if (count($words) > 0) {
             $a = 0;
             foreach ($words as $field) {
@@ -848,12 +921,14 @@ abstract class Model extends RedBean_SimpleModel {
         }
     }
 
-    public function validates_email_of($word, $label, $message) {
+    public function validates_email_of($word, $label, $message)
+    {
         if (!filter_var($this->$word, FILTER_VALIDATE_EMAIL))
             $this->errors[$word][] = array($label, $message);
     }
 
-    public function validates_length_of($word, $label, $options, $message) {
+    public function validates_length_of($word, $label, $options, $message)
+    {
         if (count($options) == 0)
             throw new ModelException('validates_length_of, you must define an option');
         else {
@@ -872,13 +947,15 @@ abstract class Model extends RedBean_SimpleModel {
                         if (mb_strlen($this->$word) == $value)
                             $this->errors[$word][] = array($label, $message);
                         break;
-                    default: throw new ModelException('validates_length_of, you must define an option');
+                    default:
+                        throw new ModelException('validates_length_of, you must define an option');
                 }
             }
         }
     }
 
-    public function validates_length_for(array $words, array $labels, $options, $message) {
+    public function validates_length_for(array $words, array $labels, $options, $message)
+    {
         if (count($words) > 0) {
             if (count($options) == 0)
                 throw new ModelException('validates_length_of, you must define an option');
@@ -900,7 +977,8 @@ abstract class Model extends RedBean_SimpleModel {
                                 if (mb_strlen($this->$field) != $value)
                                     $this->errors[$field][] = array($labels[$a], $message);
                                 break;
-                            default: throw new ModelException('validates_length_for, you must define an option');
+                            default:
+                                throw new ModelException('validates_length_for, you must define an option');
                         }
                     }
                     $a++;
@@ -909,29 +987,33 @@ abstract class Model extends RedBean_SimpleModel {
         }
     }
 
-    public function validates_confirmed_field($field, $label, $external_data, $message) {
+    public function validates_confirmed_field($field, $label, $external_data, $message)
+    {
         # $cfield = 'confirmed_' . $field;
         if ($this->$field != $external_data)
-        # if ($this->$field != $this->$cfield)
-            $this->errors[$field][] = array($label, $message);
+            # if ($this->$field != $this->$cfield)
+        $this->errors[$field][] = array($label, $message);
         #$this->$cfield = null;
         #unset($this->$cfield);
     }
-    
-    public function validates_date($field, $label, $message) {
+
+    public function validates_date($field, $label, $message)
+    {
         list($y, $m, $d) = explode("-", $this->$field);
-        if(!checkdate($m, $d, $y)){
+        if (!checkdate($m, $d, $y)) {
             $this->errors[$field][] = array($label, $message);
-        } 
+        }
     }
 
-    public function validates_uniqueness_of($field, $label, $message) {
+    public function validates_uniqueness_of($field, $label, $message)
+    {
         if (R::findOne($this->table, $field . '=?', array($this->$field)) != null)
             $this->errors[$field][] = array($label, $message);
     }
-    
 
-    public function validates_uniqueness_for(array $fields, array $labels, $message) {
+
+    public function validates_uniqueness_for(array $fields, array $labels, $message)
+    {
         if (count($fields) > 0) {
             $a = 0;
             foreach ($fields as $field) {
@@ -942,39 +1024,44 @@ abstract class Model extends RedBean_SimpleModel {
         }
     }
 
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->errors;
     }
 
-    public function isValid() {
+    public function isValid()
+    {
         if (count($this->errors) == 0)
             return true;
         return false;
     }
 
-    public function isValidField($word) {
+    public function isValidField($word)
+    {
         if (array_key_exists($word, $this->errors))
             return false;
         return true;
     }
 
-    public function viewFieldErrors($field) {
+    public function viewFieldErrors($field)
+    {
         if ($this->isValidField($field) == false) {
             echo '<div class=\'model_error_div\'>';
             echo '<ul class=\'model_error _' . $field . '\'>';
             foreach ($this->errors[$field] as $error) {
-                echo '<li class=\'model_error_li\'>\''.$error[0]. '\' ' . $error[1] . '</li>';
+                echo '<li class=\'model_error_li\'>\'' . $error[0] . '\' ' . $error[1] . '</li>';
             }
             echo '</ul>';
             echo '</div>';
         }
     }
 
-    public function viewModelErrors() {
+    public function viewModelErrors()
+    {
         if (!$this->isValid()) {
-           echo '<div class=\'alert alert-error alert-block\'>';
-           echo '<button type=\'button\' class=\'close\' data-dismiss=\'alert\'>&times;</button>';
-           echo '<h4>Si sono verificati i seguenti errori:</h4>';
+            echo '<div class=\'alert alert-error alert-block\'>';
+            echo '<button type=\'button\' class=\'close\' data-dismiss=\'alert\'>&times;</button>';
+            echo '<h4>Si sono verificati i seguenti errori:</h4>';
             echo '<div class=\'model_errors_div\'>';
             echo '<ul class=\'model_errors\'>';
             foreach ($this->errors as $field => $messages) {
