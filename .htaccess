@@ -1,24 +1,31 @@
 <IfModule mod_rewrite.c>
+
 RewriteEngine On
-#AcceptPathInfo On
+
 RewriteRule \.log$ - [R=404]
 RewriteRule \.php$ - [R=404]
 
-RewriteCond %{REQUEST_URI} !/img/
-RewriteCond %{REQUEST_URI} !/css/
-RewriteCond %{REQUEST_URI} !/js/
-RewriteCond %{REQUEST_URI} !/index\.php
-RewriteRule .* index.php/$0 [L,QSA]
+# Existing files and directories remain accessible
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.* - [L]
 
-RewriteRule ^images/.+ public/$0 [L]
-RewriteRule ^js/.+ public/$0 [L]
-RewriteRule ^css/.+ public/$0 [L]
+# Redirect the rest
+RewriteCond $1 !^(index\.php|images|robots\.txt|public)
 
-Options All -Indexes
+
+ <IfModule !mod_fastcgi.c>
+        RewriteRule ^(.*)$ index.php/$1 [L]
+    </IfModule>
+
+    <IfModule mod_fastcgi.c>
+        RewriteRule ^(.*)$ index.php?/$1 [L]
+    </IfModule>
+    Options All -Indexes
+
  </IfModule>
-
-#Gzip
-<ifmodule mod_deflate.c>
-AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript text/javascript
-</ifmodule>
-#End Gzip
+ #Gzip
+ <ifmodule mod_deflate.c>
+ AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript text/javascript
+ </ifmodule>
+ #End Gzip
