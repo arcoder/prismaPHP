@@ -3,7 +3,7 @@
 RewriteEngine On
 
 RewriteRule \.log$ - [R=404]
-RewriteRule \.php$ - [R=404]
+#RewriteRule \.php$ - [R=404]
 
 # Existing files and directories remain accessible
 RewriteCond %{REQUEST_FILENAME} -f
