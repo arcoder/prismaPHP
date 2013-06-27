@@ -451,21 +451,25 @@ class Generator
             $controllerR = new ReflectionClass($controller);
             if ($controllerR->hasMethod($action)) {
                 if ($controllerR->isSubclassOf('ApplicationController')) {
-                    if ($controllerR->getMethod($action)->isPublic() and !in_array($action, array('beforeFilter', 'afterFilter'))) {
-                        try {
-                            $controllerObj = new $controller($this->internalPath);
-                            $controllerObj->before_filter();
-                            call_user_func_array(array($controllerObj, $action), $this->internalPath->getArgs());
-                            $controllerObj->after_filter();
-                            $format = FormatHandler::getInstance($this->internalPath->getFormat(), $controllerObj, $this->internalPath);
-                            $format->view();
-                        } catch (ControllerException $e) {
-                            throw $e;
-                        } catch (FormatHandlerException $e) {
-                            throw $e;
+                    if ($controllerR->getMethod($action)->getNumberOfRequiredParameters() <= count($this->internalPath->getArgs())) {
+                        if ($controllerR->getMethod($action)->isPublic() and !in_array($action, array('beforeFilter', 'afterFilter'))) {
+                            try {
+                                $controllerObj = new $controller($this->internalPath);
+                                $controllerObj->before_filter();
+                                call_user_func_array(array($controllerObj, $action), $this->internalPath->getArgs());
+                                $controllerObj->after_filter();
+                                $format = FormatHandler::getInstance($this->internalPath->getFormat(), $controllerObj, $this->internalPath);
+                                $format->view();
+                            } catch (ControllerException $e) {
+                                throw $e;
+                            } catch (FormatHandlerException $e) {
+                                throw $e;
+                            }
+                        } else {
+                            throw new GeneratorException('Cannot load a private/protected such as action \'' . $action . '\'');
                         }
                     } else {
-                        throw new GeneratorException('Cannot load a private/protected such as action \'' . $action . '\'');
+                        throw new GeneratorException($action . ' action needs more parameters.');
                     }
                 } else {
                     throw new GeneratorException($controller . ' must extend ApplicationController');
