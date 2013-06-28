@@ -20,7 +20,7 @@ class Config
      * @access public
      * @static
      */
-    const INDEX_URL = "http://localhost:8888/prismaPHP-master";
+    const INDEX_URL = "http://localhost/prismaPHP-master";
 
 
     const DOCS = "http://phprisma.org/docs.html";
