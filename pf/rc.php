@@ -681,12 +681,9 @@ class URI
     private function __construct($url = null)
     {
         if (is_null($url)) {
-            #if (isset($_SERVER['ORIG_PATH_INFO']))
-            #    $this->path = substr($_SERVER['ORIG_PATH_INFO'], 1);
-            if (isset($_SERVER['PATH_INFO']))
-                $this->path = substr($_SERVER['PATH_INFO'], 1);
-            elseif (isset($_SERVER['REQUEST_URI']))
-                $this->path = substr($_SERVER['REQUEST_URI'], 1); else
+            if (isset($_GET['__PHURL__'])) {
+                $this->path = $_GET['__PHURL__'];
+            } else
                 $this->path = '';
         } else {
             $this->path = $url;
