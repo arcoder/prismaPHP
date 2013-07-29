@@ -4,7 +4,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-session_start();
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(dirname(__FILE__)));

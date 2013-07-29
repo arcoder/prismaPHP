@@ -365,7 +365,7 @@ abstract class Controller extends stdClass
                 switch ($key) {
                     case 'all':
                         if (count($args) > 0)
-                            call_user_func(array($this, $method), $args);
+                            call_user_func_array(array($this, $method), $args);
                         else
                             call_user_func(array($this, $method));
 
@@ -378,7 +378,7 @@ abstract class Controller extends stdClass
                         }
                         if ($flag == 1) {
                             if (count($args) > 0)
-                                call_user_func(array($this, $method), $args);
+                                call_user_func_array(array($this, $method), $args);
                             else
                                 call_user_func(array($this, $method));
                         }
@@ -391,7 +391,7 @@ abstract class Controller extends stdClass
                         }
                         if ($flag == 1) {
                             if (count($args) > 0)
-                                call_user_func(array($this, $method), $args);
+                                call_user_func_array(array($this, $method), $args);
                             else
                                 call_user_func(array($this, $method));
                         }
