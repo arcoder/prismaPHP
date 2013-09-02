@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3bbf2eb4-0a66-45bf-8944-be1d7f96faac" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pf/rb.php" afterPath="$PROJECT_DIR$/pf/rb.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/400.php" afterPath="$PROJECT_DIR$/public/400.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/404.php" afterPath="$PROJECT_DIR$/public/404.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pf/rc.php" afterPath="$PROJECT_DIR$/pf/rc.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="prismaPHP.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="3bbf2eb4-0a66-45bf-8944-be1d7f96faac" time="1375555191516" ignored="false" />
+    <file path="/Dummy.txt" changelist="3bbf2eb4-0a66-45bf-8944-be1d7f96faac" time="1378112036238" ignored="false" />
     <file path="$USER_HOME$/PhpstormProjects/fedom3/.htaccess" changelist="3bbf2eb4-0a66-45bf-8944-be1d7f96faac" time="1371048406377" ignored="false" />
     <file path="/rc.php" changelist="3bbf2eb4-0a66-45bf-8944-be1d7f96faac" time="1375096183524" ignored="false" />
     <file path="/XML.php" changelist="3bbf2eb4-0a66-45bf-8944-be1d7f96faac" time="1370771206677" ignored="false" />
@@ -87,7 +89,7 @@
       <file leaf-file-name="rc.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pf/rc.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="390" column="25" selection-start="10856" selection-end="10856" vertical-scroll-proportion="0.039577838">
+            <state line="93" column="5" selection-start="2587" selection-end="2587" vertical-scroll-proportion="0.799435">
               <folding />
             </state>
           </provider>
@@ -163,6 +165,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -181,83 +184,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="prismaPHP" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="prismaPHP-master" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="prismaPHP" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="prismaPHP-master" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="prismaPHP" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="prismaPHP-master" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pf" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="prismaPHP" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="prismaPHP-master" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controller" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="prismaPHP" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="prismaPHP-master" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -266,8 +194,8 @@
     <property name="options.lastSelected" value="reference.webide.settings.project.settings.php.zend.framework.tool" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -277,6 +205,9 @@
             <mapping local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
+      </server>
+      <server id="5bdbcac0-71d9-40d5-b601-c68e376dff3d">
+        <serverdata />
       </server>
       <server id="7860163a-3fbc-4953-8c6d-172801d0a9df">
         <serverdata>
@@ -289,8 +220,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/pf" />
       <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/pf" />
     </key>
   </component>
   <component name="RunManager">
@@ -390,19 +321,23 @@
       <created>1375096240963</created>
       <updated>1375096240963</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="added redbeanPHP 3.4.7">
+      <created>1375555295359</created>
+      <updated>1375555295359</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="774" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32317072" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32317072" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33387357" sideWeight="0.6768293" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3395462" sideWeight="0.6768293" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -460,7 +395,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="filter method bug solved" />
+    <option name="LAST_COMMIT_MESSAGE" value="added redbeanPHP 3.4.7" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -483,16 +418,12 @@
     <MESSAGE value="Foundation 4 added" />
     <MESSAGE value="new .htaccess management and public/ rewrite rule" />
     <MESSAGE value="filter method bug solved" />
+    <MESSAGE value="added redbeanPHP 3.4.7" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/helper/H.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="46" selection-start="934" selection-end="982" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/format/JSON.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="19" selection-start="65" selection-end="78" vertical-scroll-proportion="0.1744186" />
@@ -513,12 +444,12 @@
         <state line="3" column="41" selection-start="106" selection-end="106" vertical-scroll-proportion="0.07462686" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/400.php">
+    <entry file="file://$PROJECT_DIR$/public/400.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="0" selection-start="175" selection-end="175" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/404.php">
+    <entry file="file://$PROJECT_DIR$/public/404.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="7" selection-start="0" selection-end="301" vertical-scroll-proportion="0.0" />
       </provider>
@@ -573,9 +504,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pf/rb.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="3" selection-start="6" selection-end="9" vertical-scroll-proportion="0.042372882" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pf/rc.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="390" column="25" selection-start="10856" selection-end="10856" vertical-scroll-proportion="0.039577838">
+        <state line="93" column="5" selection-start="2587" selection-end="2587" vertical-scroll-proportion="0.799435">
           <folding />
         </state>
       </provider>

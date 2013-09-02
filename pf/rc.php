@@ -83,14 +83,14 @@ class Redirect
     public static function to404($message = '')
     {
         header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
-        require './404.php';
+        require ROOT . DS . 'public' . DS . '404.php';
         exit;
     }
 
     public static function to400($message = '')
     {
         header($_SERVER["SERVER_PROTOCOL"] . ' 400 Bad Request', true, 400);
-        require './400.php';
+        require ROOT . DS . 'public' . DS . '400.php';
     }
 
 }
