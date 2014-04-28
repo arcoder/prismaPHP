@@ -411,7 +411,7 @@ class GeneratorException extends OException
 }
 
 class Generator
-{
+{ 
 
     private $internalPath;
     private static $instance;
