@@ -288,8 +288,7 @@ class Warning
 
 }
 
-class FormatHandlerException extends OException
-{
+class FormatHandlerException extends OException {
 
 }
 
